@@ -1,0 +1,21 @@
+.container-grid{
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-rows: 100%; 
+}
+
+body {
+    margin: 0px;
+}
+.elementor-widget-container{
+    
+width: 200px;
+}
+
+#xframe{
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
