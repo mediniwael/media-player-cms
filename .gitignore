@@ -1,2 +1,4 @@
 /node_modules
 /public/resources
+/src1
+express.example.js
