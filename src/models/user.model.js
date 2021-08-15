@@ -3,11 +3,14 @@ var dbConn = require('../../config/db.config');
 
 //Client object create
 var User = function (user) {
+    this.idUser = user.idUser
     this.username = user.username;
     this.email = user.email;
     this.password = user.password;
+    this.salt = user.salt;
     this.create_time = new Date();
     this.Client_idClient = user.Client_idClient;
+    this.admin = user.admin
 };
 
 User.create = function (newUser, result) {
@@ -33,6 +36,19 @@ User.findById = function (id, result) {
         }
     });
 };
+
+User.findOne = function (username, result) {
+    dbConn.query("Select * from User where username = ? ", username, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
 User.findAll = function (result) {
     dbConn.query("Select * from User", function (err, res) {
         if (err) {
@@ -46,7 +62,7 @@ User.findAll = function (result) {
     });
 };
 User.update = function (id, User, result) {
-    dbConn.query("UPDATE User SET username=?,email=?,password=? WHERE idUser = ?", [User.username, User.email, User.password, id], function (err, res) {
+    dbConn.query("UPDATE User SET username=?,email=?,password=?,salt=?,admin=? WHERE idUser = ?", [User.username, User.email, User.password, User.salt,user.admin, id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);
