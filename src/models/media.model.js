@@ -33,6 +33,19 @@ Media.findById = function (id, result) {
         }
     });
 };
+
+Media.findByClientId = function (id, result) {
+    dbConn.query("Select * from Media where Client_idClient = ? ", id, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
 Media.findAll = function (result) {
     dbConn.query("Select * from Media", function (err, res) {
         if (err) {

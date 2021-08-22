@@ -1,20 +1,24 @@
 const express = require('express')
 const router = express.Router()
 const affichageController = require('../controllers/affichage.controller');
+const { isSiteAdmin, isClientAdmin, isAdmin, injectClientId, isAuth, isClient } = require('./authMiddleware');
 
-// Retrieve all affichage
-router.get('/', affichageController.findAll);
 
-// Create a new affichage
-router.post('/', affichageController.create);
+router.get('/', isSiteAdmin, affichageController.findAll);
 
-// Retrieve a single affichage with id
-router.get('/:id', affichageController.findById);
 
-// Update a affichage with id
-router.put('/:id', affichageController.update);
+router.post('/', isAuth, injectClientId, affichageController.create);
 
-// Delete a affichage with id
-router.delete('/:id', affichageController.delete);
+
+router.get('/:id', isAuth, isClient, affichageController.findById);
+
+
+router.put('/:id', isAuth, isClient, affichageController.update);
+
+
+router.delete('/:id', isAuth, isClient, affichageController.delete);
+
+
+router.get('/cl/', isAuth, affichageController.findByClientId);
 
 module.exports = router

@@ -12,9 +12,6 @@ var Colonne = function (colonne) {
 Colonne.create = function (newColonne, result) {
     dbConn.query("Select * from Colonne where Maquette_idMaquette = ?  AND ColonneNbr = ?", [newColonne.Maquette_idMaquette, newColonne.ColonneNbr], function (err, res) {
         if (!err) {
-            console.log("wael test");
-            console.log(res)
-            console.log("wael test");
             res.forEach(element => {
                 Playlist.delete(element.Playlist_idPlaylist, function (err, playlist) {
                     if (err)

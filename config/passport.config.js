@@ -8,16 +8,20 @@ const validPassword = require('../lib/passwordUtils').validPassword;
 
 const verifyCallback = (username, password, done) => {
     User.findOne(username, function (err, user) {
-        user = new User(user[0])
-        console.log(user);
-        if (err)
+        try {
+            user = new User(user[0])
+
+            if (err)
+                done(err);
+            if (!user) { return done(null, false) }
+            const isValid = validPassword(password, user.password, user.salt);
+            if (isValid) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        } catch (er) {
             done(err);
-        if (!user) { return done(null, false) }
-        const isValid = validPassword(password, user.password, user.salt);
-        if (isValid) {
-            return done(null, user);
-        } else {
-            return done(null, false);
         }
     });
 
@@ -40,7 +44,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((userId, done) => {
-    User.findById(userId, function(err, user) {
+    User.findById(userId, function (err, user) {
         if (err)
             done(err)
         done(null, user);

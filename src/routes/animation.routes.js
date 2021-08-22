@@ -1,20 +1,21 @@
 const express = require('express')
 const router = express.Router()
 const animationController = require('../controllers/animation.controller');
+const { isSiteAdmin, isClientAdmin, isAdmin , isAuth} = require('./authMiddleware');
 
 // Retrieve all animation
-router.get('/', animationController.findAll);
+router.get('/', isAuth, animationController.findAll);
 
 // Create a new animation
-router.post('/', animationController.create);
+router.post('/', isSiteAdmin, animationController.create);
 
 // Retrieve a single animation with id
-router.get('/:id', animationController.findById);
+router.get('/:id', isAuth, animationController.findById);
 
 // Update a animation with id
-router.put('/:id', animationController.update);
+router.put('/:id', isSiteAdmin, animationController.update);
 
 // Delete a animation with id
-router.delete('/:id', animationController.delete);
+router.delete('/:id', isSiteAdmin, animationController.delete);
 
 module.exports = router

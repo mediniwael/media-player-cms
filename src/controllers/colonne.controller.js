@@ -6,7 +6,7 @@ exports.findAll = function (req, res) {
     Colonne.findAll(function (err, colonne) {
         console.log('controller')
         if (err)
-            res.send(err);
+            return res.send(err);
         console.log('res', colonne);
         res.send(colonne);
     });
@@ -23,7 +23,7 @@ exports.create = function (req, res) {
     } else {
         Colonne.create(new_colonne, function (err, colonne) {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.json({ error: false, message: "Colonne added successfully!", data: colonne });
         });
     }
@@ -32,9 +32,9 @@ exports.create = function (req, res) {
 
 
 exports.delete = function (req, res) {
-    Colonne.delete([req.params.idMaq , req.params.nbr], function (err, colonne) {
+    Colonne.delete([req.params.idMaq, req.params.nbr], function (err, colonne) {
         if (err)
-            res.send(err);
+            return res.send(err);
         res.json({ error: false, message: 'Colonne successfully deleted' });
     });
 };

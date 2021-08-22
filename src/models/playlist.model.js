@@ -23,7 +23,17 @@ Playlist.create = function (newPlaylist, result) {
     });
 };
 
-
+Playlist.findByClientId = function (id, result) {
+    dbConn.query("Select * from Playlist where Client_idClient = ? ", id, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
 
 Playlist.findById = function (id, result) {
     dbConn.query("Select * from Playlist where idPlaylist = ? ", id, function (err, res) {

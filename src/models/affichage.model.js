@@ -34,6 +34,19 @@ Affichage.findById = function (id, result) {
         }
     });
 };
+
+Affichage.findByClientId = function (id, result) {
+    dbConn.query("Select * from Affichage where Client_idClient = ? ", id, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
 Affichage.findAll = function (result) {
     dbConn.query("Select * from Affichage", function (err, res) {
         if (err) {

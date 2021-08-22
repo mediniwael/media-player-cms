@@ -32,6 +32,19 @@ Maquette.findById = function (id, result) {
         }
     });
 };
+
+Maquette.findByClientId = function (id, result) {
+    dbConn.query("Select * from Maquette where Client_idClient = ? ", id, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
 Maquette.findAll = function (result) {
     dbConn.query("Select * from Maquette", function (err, res) {
         if (err) {

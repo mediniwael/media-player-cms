@@ -33,6 +33,8 @@ exports.create = function(req, res) {
 
 
 exports.findById = function(req, res) {
+    if(req.clientAuth === 0)
+        return res.json([]);
     Playlist.findById(req.params.id, function(err, playlist) {
         if (err)
         res.send(err);
@@ -40,14 +42,30 @@ exports.findById = function(req, res) {
     });
 };
 
+exports.findByClientId = function (req, res) {
+    if (req.isAuthenticated()) {
+        if (req.user[0].Client_idClient)
+        Playlist.findById(req.user[0].Client_idClient, function (err, playlist) {
+                if (err)
+                    return res.send(err);
+                res.json(playlist);
+            });
+    } else {
+        return res.send(err);
+    }
+
+};
+
 
 exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
+        if(req.clientAuth === 0)
+            return res.json({ error: false, message: 'Unauthorised update' });
         Playlist.update(req.params.id, new Playlist(req.body), function(err, playlist) {
             if (err)
-            res.send(err);
+            return res.send(err);
             res.json({ error:false, message: 'Playlist successfully updated' });
         });
     }
@@ -55,17 +73,21 @@ exports.update = function(req, res) {
 };
 
 exports.findByIdDetails = function(req, res) {
+    if(req.clientAuth === 0)
+        return res.json([]);
     Playlist.findByIdDetails(req.params.id, function(err, playlist) {
         if (err)
-        res.send(err);
+        return res.send(err);
         res.json(playlist);
     });
 };
 
 exports.delete = function(req, res) {
+    if(req.clientAuth === 0)
+            return res.json({ error: false, message: 'Unauthorised delete' });
   Playlist.delete( req.params.id, function(err, playlist) {
     if (err)
-    res.send(err);
+    return res.send(err);
     res.json({ error:false, message: 'Playlist successfully deleted' });
   });
 };

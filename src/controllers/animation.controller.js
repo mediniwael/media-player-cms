@@ -6,7 +6,7 @@ exports.findAll = function(req, res) {
   Animation.findAll(function(err, animation) {
     console.log('controller')
     if (err)
-    res.send(err);
+    return res.send(err);
     console.log('res', animation);
     res.send(animation);
   });
@@ -23,7 +23,7 @@ exports.create = function(req, res) {
     }else{
         Animation.create(new_animation, function(err, animation) {
             if (err)
-            res.send(err);
+            return res.send(err);
             res.json({error:false,message:"Animation added successfully!",data:animation});
         });
     }
@@ -33,7 +33,7 @@ exports.create = function(req, res) {
 exports.findById = function(req, res) {
     Animation.findById(req.params.id, function(err, animation) {
         if (err)
-        res.send(err);
+        return res.send(err);
         res.json(animation);
     });
 };
@@ -45,7 +45,7 @@ exports.update = function(req, res) {
     }else{
         Animation.update(req.params.id, new Animation(req.body), function(err, animation) {
             if (err)
-            res.send(err);
+            return res.send(err);
             res.json({ error:false, message: 'Animation successfully updated' });
         });
     }
@@ -56,7 +56,7 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   Animation.delete( req.params.id, function(err, animation) {
     if (err)
-    res.send(err);
+    return res.send(err);
     res.json({ error:false, message: 'Animation successfully deleted' });
   });
 };

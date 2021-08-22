@@ -37,6 +37,18 @@ User.findById = function (id, result) {
     });
 };
 
+User.findByClientId = function (id, result) {
+    dbConn.query("Select * from User where Client_idClient = ? ", id, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
 User.findOne = function (username, result) {
     dbConn.query("Select * from User where username = ? ", username, function (err, res) {
         if (err) {

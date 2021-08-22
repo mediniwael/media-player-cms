@@ -6,7 +6,7 @@ exports.findAll = function(req, res) {
   Playlist_has_media.findAll(function(err, playlist_has_media) {
     console.log('controller')
     if (err)
-    res.send(err);
+    return res.send(err);
     console.log('res', playlist_has_media);
     res.send(playlist_has_media);
   });
@@ -23,7 +23,7 @@ exports.create = function(req, res) {
     }else{
         Playlist_has_media.create(new_playlist_has_media, function(err, playlist_has_media) {
             if (err)
-            res.send(err);
+            return res.send(err);
             res.json({error:false,message:"Playlist_has_media added successfully!",data:playlist_has_media});
         });
     }
@@ -32,7 +32,7 @@ exports.create = function(req, res) {
 exports.delete = function(req, res) {
   Playlist_has_media.delete( [req.params.idPlaylist, req.params.idMedia], function(err, playlist_has_media) {
     if (err)
-    res.send(err);
+    return res.send(err);
     res.json({ error:false, message: 'Playlist_has_media successfully deleted' });
   });
 };
