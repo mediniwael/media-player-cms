@@ -16,11 +16,10 @@ var User = function (user) {
 User.create = function (newUser, result) {
     dbConn.query("INSERT INTO User set ?", newUser, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
-            console.log(res.insertId);
             result(null, res.insertId);
         }
     });
@@ -28,7 +27,7 @@ User.create = function (newUser, result) {
 User.findById = function (id, result) {
     dbConn.query("Select * from User where idUser = ? ", id, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
@@ -40,7 +39,7 @@ User.findById = function (id, result) {
 User.findByClientId = function (id, result) {
     dbConn.query("Select * from User where Client_idClient = ? ", id, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
@@ -52,7 +51,7 @@ User.findByClientId = function (id, result) {
 User.findOne = function (username, result) {
     dbConn.query("Select * from User where username = ? ", username, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
@@ -64,19 +63,18 @@ User.findOne = function (username, result) {
 User.findAll = function (result) {
     dbConn.query("Select * from User", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         }
         else {
-            console.log('Users : ', res);
             result(null, res);
         }
     });
 };
 User.update = function (id, User, result) {
-    dbConn.query("UPDATE User SET username=?,email=?,password=?,salt=?,admin=? WHERE idUser = ?", [User.username, User.email, User.password, User.salt,user.admin, id], function (err, res) {
+    dbConn.query("UPDATE User SET username=?,email=?,password=?,salt=?,admin=? WHERE idUser = ?", [User.username, User.email, User.password, User.salt, user.admin, id], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         } else {
             result(null, res);
@@ -86,7 +84,7 @@ User.update = function (id, User, result) {
 User.delete = function (id, result) {
     dbConn.query("DELETE FROM User WHERE idUser = ?", [id], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         }
         else {

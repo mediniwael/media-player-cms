@@ -4,17 +4,22 @@ const Animation = require('../models/animation.model');
 
 exports.findAll = function(req, res) {
   Animation.findAll(function(err, animation) {
-    console.log('controller')
     if (err)
     return res.send(err);
-    console.log('res', animation);
     res.send(animation);
   });
 };
 
 
+exports.findwithMediaId = function(req, res) {
+    Animation.findwithMediaId(function(err, animation) {
+      if (err)
+      return res.send(err);
+      res.send(animation);
+    });
+  };
+
 exports.create = function(req, res) {
-    console.log(req.body)
     const new_animation = new Animation(req.body);
     
     //handles null error 

@@ -4,17 +4,14 @@ const Playlist_has_media = require('../models/playlist_has_media.model');
 
 exports.findAll = function(req, res) {
   Playlist_has_media.findAll(function(err, playlist_has_media) {
-    console.log('controller')
     if (err)
     return res.send(err);
-    console.log('res', playlist_has_media);
     res.send(playlist_has_media);
   });
 };
 
 
 exports.create = function(req, res) {
-    console.log(req.body)
     const new_playlist_has_media = new Playlist_has_media(req.body);
     
     //handles null error 

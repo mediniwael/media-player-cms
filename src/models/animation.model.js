@@ -11,11 +11,10 @@ var Animation = function (animation) {
 Animation.create = function (newAnimation, result) {
     dbConn.query("INSERT INTO Animation set ?", newAnimation, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
-            console.log(res.insertId);
             result(null, res.insertId);
         }
     });
@@ -23,8 +22,19 @@ Animation.create = function (newAnimation, result) {
 Animation.findById = function (id, result) {
     dbConn.query("Select * from Animation where idAnimation = ? ", id, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+Animation.findwithMediaId = function (result) {
+    dbConn.query("Select Animation.label As 'label' ,media.idMedia AS 'idMedia' from Animation INNER JOIN media ON Animation.idAnimation = media.Animation_idAnimation", function (err, res) {
+        if (err) {
+            console.error("error: ", err);
+            result(null, err);
         }
         else {
             result(null, res);
@@ -34,11 +44,10 @@ Animation.findById = function (id, result) {
 Animation.findAll = function (result) {
     dbConn.query("Select * from Animation", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         }
         else {
-            console.log('Animations : ', res);
             result(null, res);
         }
     });
@@ -46,7 +55,7 @@ Animation.findAll = function (result) {
 Animation.update = function (id, Animation, result) {
     dbConn.query("UPDATE Animation SET label=?,lien=? WHERE idAnimation = ?", [Animation.label, Animation.lien, id], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         } else {
             result(null, res);
@@ -56,7 +65,7 @@ Animation.update = function (id, Animation, result) {
 Animation.delete = function (id, result) {
     dbConn.query("DELETE FROM Animation WHERE idAnimation = ?", [id], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         }
         else {

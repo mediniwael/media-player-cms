@@ -13,11 +13,10 @@ var Media = function (media) {
 Media.create = function (newMedia, result) {
     dbConn.query("INSERT INTO Media set ?", newMedia, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
-            console.log(res.insertId);
             result(null, res.insertId);
         }
     });
@@ -25,7 +24,7 @@ Media.create = function (newMedia, result) {
 Media.findById = function (id, result) {
     dbConn.query("Select * from Media where idMedia = ? ", id, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(err, null);
         }
         else {
@@ -37,7 +36,19 @@ Media.findById = function (id, result) {
 Media.findByClientId = function (id, result) {
     dbConn.query("Select * from Media where Client_idClient = ? ", id, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
+Media.findByAnimId = function (id, result) {
+    dbConn.query("Select * from Media where Animation_idAnimation = ? ", id, function (err, res) {
+        if (err) {
+            console.error("error: ", err);
             result(err, null);
         }
         else {
@@ -49,19 +60,18 @@ Media.findByClientId = function (id, result) {
 Media.findAll = function (result) {
     dbConn.query("Select * from Media", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         }
         else {
-            console.log('Medias : ', res);
             result(null, res);
         }
     });
 };
 Media.update = function (id, Media, result) {
-    dbConn.query("UPDATE Media SET label=?,type=?,lien=?,Client_idClient=?,Animation_idAnimation=? WHERE idMedia = ?", [Media.label, Media.type, Media.lien,Media.Client_idClient,Media.Animation_idAnimation, id], function (err, res) {
+    dbConn.query("UPDATE Media SET label=?,type=?,lien=?,Client_idClient=?,Animation_idAnimation=? WHERE idMedia = ?", [Media.label, Media.type, Media.lien, Media.Client_idClient, Media.Animation_idAnimation, id], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         } else {
             result(null, res);
@@ -71,7 +81,7 @@ Media.update = function (id, Media, result) {
 Media.delete = function (id, result) {
     dbConn.query("DELETE FROM Media WHERE idMedia = ?", [id], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            console.error("error: ", err);
             result(null, err);
         }
         else {

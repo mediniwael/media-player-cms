@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mediaplayer</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+        }
+
+        .animation-item {
+            place-self: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .grid-item-inside {
+            place-self: center;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container-grid {
+            height: 100%;
+            width: 100%;
+            background-color: #ffffff;
+            display: grid;
+        }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const roomNamearr = window.location.pathname.split('/')
+        const roomName = roomNamearr[roomNamearr.length - 1]
+        const clidpath = roomNamearr[roomNamearr.length - 2]
+        const socket = io.connect();
+        socket.emit('create', roomName);
+        socket.on("changes detected", function () {
+            window.location.reload()
+        })
+
+    </script>
+</head>
+
+<body>
+
+    <div class="container-grid">
+        <div id="col1">
+        </div>
+        <div id="col2">
+        </div>
+        <div id="col3">
+
+        </div>
+        <div id="col4">
+        </div>
+        <div id="col5">
+        </div>
+        <div id="col6">
+        </div>
+        <div id="col7">
+        </div>
+        <div id="col8">
+        </div>
+        <div id="col9">
+        </div>
+        <div id="col10">
+        </div>
+        <div id="col11">
+        </div>
+        <div id="col12">
+
+        </div>
+
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var video1 = document.querySelector("#webcam-video1");
+        var video2 = document.querySelector("#webcam-video2");
+        var video3 = document.querySelector("#webcam-video3");
+        var video4 = document.querySelector("#webcam-video4");
+        var video5 = document.querySelector("#webcam-video5");
+        var video6 = document.querySelector("#webcam-video6");
+        var video7 = document.querySelector("#webcam-video7");
+        var video8 = document.querySelector("#webcam-video8");
+        var video9 = document.querySelector("#webcam-video9");
+        var video10 = document.querySelector("#webcam-video10");
+        var video11 = document.querySelector("#webcam-video11");
+        var video12 = document.querySelector("#webcam-video12");
+
+        function initVideo() {
+            video1 = document.querySelector("#webcam-video1");
+            video2 = document.querySelector("#webcam-video2");
+            video3 = document.querySelector("#webcam-video3");
+            video4 = document.querySelector("#webcam-video4");
+            video5 = document.querySelector("#webcam-video5");
+            video6 = document.querySelector("#webcam-video6");
+            video7 = document.querySelector("#webcam-video7");
+            video8 = document.querySelector("#webcam-video8");
+            video9 = document.querySelector("#webcam-video9");
+            video10 = document.querySelector("#webcam-video10");
+            video11 = document.querySelector("#webcam-video11");
+            video12 = document.querySelector("#webcam-video12");
+        }
+
+        const constraints = {
+            audio: false,
+            //video: true
+            video: { width: 1920, height: 1080 }
+        };
+
+        function getStream(idn) {
+            if (video1) {
+                var constr = constraints
+
+                if (navigator.mediaDevices.getUserMedia) {
+                    if (deviceIds != undefined)
+                        constr.video.deviceId = { exact: deviceIds[idn] }
+                    const myPromise = navigator.mediaDevices.getUserMedia(constr)
+                    myPromise.then(function (stream) {
+                        if (video1 != null)
+                            video1.srcObject = stream;
+                        if (video2 != null)
+                            video2.srcObject = stream;
+                        if (video3 != null)
+                            video3.srcObject = stream;
+                        if (video4 != null)
+                            video4.srcObject = stream;
+                        if (video5 != null)
+                            video5.srcObject = stream;
+                        if (video6 != null)
+                            video6.srcObject = stream;
+                        if (video7 != null)
+                            video7.srcObject = stream;
+                        if (video8 != null)
+                            video8.srcObject = stream;
+                        if (video9 != null)
+                            video9.srcObject = stream;
+                        if (video10 != null)
+                            video10.srcObject = stream;
+                        if (video11 != null)
+                            video11.srcObject = stream;
+                        if (video12 != null)
+                            video12.srcObject = stream;
+                    })
+                        .catch(function (err0r) {
+                            console.error("Something went wrong!" + err0r);
+                        });
+                }
+            }
+
+        }
+
+        if (!localStorage.webcamId)
+            localStorage.webcamId = 0
+
+        var webcamId = localStorage.webcamId
+
+        var deviceIds;
+        navigator.mediaDevices.getUserMedia(constraints)
+        navigator.mediaDevices.enumerateDevices()
+            .then(function (devices) {
+                deviceIds = devices.filter(d => d.kind === "videoinput").map(d => d.deviceId);
+            })
+            .catch(function (err) {
+                console.error(err.name + ": " + err.message);
+            });
+
+        function runStream() {
+            getStream(webcamId)
+        }
+
+        $(function () {
+            var playlists = []
+
+            $.ajax({
+                url: window.location.origin + "/api/v1/affichages/detail/" + roomName,
+                dataType: "text"
+            }).done((data) => {
+                setTimeout(runStream, 2500)
+                var current = webcamId;
+                console.log(data);
+                var json = $.parseJSON(data);
+                var webcamCounter = 1
+                if (json[0]) {
+                    var grid = json[0].grid.trim()
+                    grid = grid.replaceAll('auto', '1fr')
+                    $(".container-grid").css({ "grid-template-columns": grid, "grid-template-rows": "100%" })
+                }
+                for (var i = 0; i < json.length; ++i) {
+                    if (json[i].colonne_type == "Webcam") {
+                        $("#col" + json[i].colonne_nbr).html("<video autoplay muted class='grid-item-inside' id='webcam-video" + webcamCounter + "'>Your browser does not support the element.</video>")
+                        $("#col" + json[i].colonne_nbr).addClass("webcam-container")
+                        webcamCounter++
+                        initVideo()
+                        getStream(0)
+                    } else if (json[i].colonne_type == "Video") {
+                        $("#col" + json[i].colonne_nbr).html("<video loop autoplay muted class='grid-item-inside' ><source src='" + window.location.origin + "/video/" + clidpath + "/" + json[i].media_lien + "' type='video/mp4'/>Your browser does not support the element.</video>")
+                    } else if (json[i].colonne_type == "Image") {
+                        $("#col" + json[i].colonne_nbr).html("<img class='grid-item-inside' src='" + window.location.origin + "/image/" + clidpath + "/" + json[i].media_lien + "'/>")
+                    } else if (json[i].colonne_type == "Animation") {
+                        $("#col" + json[i].colonne_nbr).html("<iframe class='animation-item' frameBorder='0' src='" + window.location.origin + json[i].animation_lien + "'> </iframe>")
+                    } else if (json[i].colonne_type == "Playlist") {
+                        const vidLink = window.location.origin + "/video/" + clidpath + "/" + json[i].media_lien
+                        const index = playlists.findIndex((el) => { return el.colonne_nbr == json[i].colonne_nbr })
+                        console.log(index);
+                        if (index == -1) {
+                            const pli = playlists.length
+                            playlists[pli] = { colonne_nbr: json[i].colonne_nbr, playlist_label: json[i].playlist_label, video_id: '#playlist' + json[i].colonne_nbr, source_id: '#source' + json[i].colonne_nbr, curr_play_index: 0, videos: [vidLink] }
+
+                            $("#col" + json[i].colonne_nbr).html("<video autoplay muted class='grid-item-inside' id='playlist" + json[i].colonne_nbr + "'><source id='source" + json[i].colonne_nbr + "' src='" + vidLink + "' type='video/mp4'></video>")
+
+                        } else {
+                            playlists[index].videos.push(vidLink)
+                        }
+
+                    }
+                }
+                $(".webcam-container").click(function () {
+                    current++
+                    current = current % 3
+                    localStorage.webcamId = current
+                    getStream(current)
+                });
+
+
+                playlists.forEach(currentItem => {
+                    $(currentItem.video_id).on('ended', function () {
+                        var curr_video = $(currentItem.video_id).get()[0]
+                        currentItem.curr_play_index++
+                        currentItem.curr_play_index = currentItem.curr_play_index % currentItem.videos.length
+                        $(currentItem.source_id).attr("src", currentItem.videos[currentItem.curr_play_index]);
+                        curr_video.load();
+                        curr_video.play();
+                    })
+                });
+
+            })
+
+
+        })
+
+
+    </script>
+</body>
+
+</html>

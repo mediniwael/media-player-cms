@@ -4,6 +4,7 @@ const Maquette = require('../models/maquette.model');
 const Media = require('../models/media.model');
 const Playlist = require('../models/playlist.model');
 const User = require('../models/user.model');
+const Colonne = require('../models/colonne.model');
 
 module.exports.isAuthed = (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -11,6 +12,8 @@ module.exports.isAuthed = (req, res, next) => {
             res.json({ auth: 1 });
         } else if (req.user[0].admin == 2) {
             res.json({ auth: 2 });
+        } else if (req.user[0].admin == 9) {
+            res.json({ auth: 9 });
         } else
             res.json({ auth: 0 });
     } else {
@@ -124,13 +127,10 @@ module.exports.isClient = (req, res, next) => {
                 req.clientAuth = 0
             next()
         });
+
 }
 
 module.exports.isAdmin = (req, res, next) => {
-    console.log("isAdmin");
-    if (req.user)
-        console.log(req.user);
-    console.log("isAdmin");
     if (req.isAuthenticated() && (req.user[0].admin == 1 || req.user[0].admin == 2)) {
         next();
     } else {
@@ -141,6 +141,12 @@ module.exports.isAdmin = (req, res, next) => {
 module.exports.injectClientId = (req, res, next) => {
     if (req.user[0].Client_idClient)
         req.body.Client_idClient = req.user[0].Client_idClient
+    next()
+}
+
+module.exports.injectClientIdAsParam = (req, res, next) => {
+    if (req.user[0].Client_idClient)
+        req.params.client_id = req.user[0].Client_idClient
     next()
 }
 

@@ -5,36 +5,20 @@ const MySQLStore = require('express-mysql-session')(session);
 const dbConn = require('./config/db.config');
 const passport = require('passport');
 const server = require('http').createServer(app)
-/*//const io = require('socket.io')(server, { cors: { origin: "*" } })
-const cors = require('cors');
-app.use(cors({
-    origin: "http://localhost:4200",
-    credentials: true    
-}));
-
-app.use(function (req, res, next) {
-
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});*/
+const { Server } = require("socket.io");
+const io = new Server(server);
+const { eventEmitter1, emitDisplayChanges } = require('./src/middleware/midlleware')
+const upload = require('express-fileupload')
+const { isAuth } = require('./src/middleware/authMiddleware')
 
 
+app.use(upload())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static('./public'));
+app.use('/video', express.static('./resources/videos'));
+app.use('/image', express.static('./resources/images'));
+
 
 require('./config/passport.config')
 
@@ -58,10 +42,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
-/*app.get('/', (req, res) => {
-  res.status(200).send('Hello');
-});*/
-
 // Require user routes
 const userRoutes = require('./src/routes/user.routes')
 const playlist_has_mediaRoutes = require('./src/routes/playlist_has_media.routes')
@@ -74,6 +54,28 @@ const animationRoutes = require('./src/routes/animation.routes')
 const affichageRoutes = require('./src/routes/affichage.routes')
 
 // using as middleware
+app.use(emitDisplayChanges)
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+io.sockets.on('connection', function (socket) {
+  socket.on('create', function (room) {
+    socket.join(room);
+    console.log("rooms");
+    console.log(socket.rooms);
+  });
+});
+
+
+eventEmitter1.on("changes detected", (room) => {
+  io.to(room).emit("changes detected")
+})
+
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/phm', playlist_has_mediaRoutes)
 app.use('/api/v1/playlists', playlistRoutes)
@@ -87,17 +89,11 @@ app.use('/api/v1/clients', clientRoutes)
 const authenticationRoutes = require('./src/routes/authentication.routes');
 app.use('/api', authenticationRoutes)
 
-app.get('/', (req, res, next) => {
-  if (req.isAuthenticated()) {
-    res.send('<h1>Home</h1><p> <a href="/logout">logout</a></p>');
-  } else {
-    res.send('<h1>Home</h1><p><a href="/register">register</a></p><p><a href="/login">login</a></p>');
-  }
-});
+
+app.get('/affichage/:cl/:room', (req, res) => {
+  res.sendFile(__dirname + '/resources/mediaplayer/index.html')
+})
 
 server.listen(5000, () => {
   console.log("server is running")
 })
-/*app.listen(5000, () => {
-  console.log("server is running")
-})*/

@@ -1,24 +1,24 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-const { isSiteAdmin, isClientAdmin, isAdmin, isAuthed, isAuth } = require('./authMiddleware');
+const { isSiteAdmin, isClientAdmin, isAdmin, isAuthed } = require('../middleware/authMiddleware');
+const { logBody } = require('../middleware/midlleware')
 const authenticationController = require('../controllers/authentication.controller');
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
-    res.json({ success: true, status: 'You are successfully logged in' })
+router.post('/login', logBody, passport.authenticate('local'), (req, res) => {
+    res.end()
 });
 
 
 
 
-router.post('/register', authenticationController.register);
+router.post('/register', logBody, authenticationController.register);
 
 router.get('/register', authenticationController.registrationForm);
 router.get('/login', authenticationController.loginForm);
 
 
 router.get('/protected-route', isAdmin, (req, res, next) => {
-    //console.log(req.isAuthenticated());
     // This is how you check if a user is authenticated and protect a route.  You could turn this into a custom middleware to make it less redundant
     if (req.isAuthenticated()) {
         res.send('<h1>You are authenticated</h1><p><a href="/logout">Logout and reload</a></p>');

@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const animationController = require('../controllers/animation.controller');
-const { isSiteAdmin, isClientAdmin, isAdmin , isAuth} = require('./authMiddleware');
+const { isSiteAdmin, isClientAdmin, isAdmin , isAuth} = require('../middleware/authMiddleware');
 
 // Retrieve all animation
-router.get('/', isAuth, animationController.findAll);
+router.get('/', animationController.findAll);
+
+// Retrieve all animation
+router.get('/media/id', animationController.findwithMediaId);
 
 // Create a new animation
 router.post('/', isSiteAdmin, animationController.create);

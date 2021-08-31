@@ -1,0 +1,952 @@
+<!doctype html>
+<!--
+* Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
+* @version 1.0.0-beta3
+* @link https://tabler.io
+* Copyright 2018-2021 The Tabler Authors
+* Copyright 2018-2021 codecalm.net Paweł Kuna
+* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+-->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+  <!-- CSS files -->
+  <link href="./dist/css/tabler.min.css" rel="stylesheet" />
+  <link href="./dist/css/tabler-flags.min.css" rel="stylesheet" />
+  <link href="./dist/css/tabler-payments.min.css" rel="stylesheet" />
+  <link href="./dist/css/tabler-vendors.min.css" rel="stylesheet" />
+  <link href="./dist/css/demo.min.css" rel="stylesheet" />
+</head>
+
+<body class="antialiased">
+  <div class="wrapper">
+
+    <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <h1 class="navbar-brand navbar-brand-autodark">
+          <a href=".">
+            <img src="./static/logo-white.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+          </a>
+        </h1>
+        <div class="navbar-nav flex-row d-lg-none">
+          <div class="nav-item d-none d-md-flex me-3">
+            <div class="btn-list">
+              <a href="https://github.com/tabler/tabler" class="btn btn-outline-white" target="_blank" rel="noreferrer">
+                <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24"
+                  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+                </svg>
+                Source code
+              </a>
+              <a href="https://github.com/sponsors/codecalm" class="btn btn-outline-white" target="_blank"
+                rel="noreferrer">
+                <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink" width="24" height="24"
+                  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                </svg>
+                Sponsor
+              </a>
+            </div>
+          </div>
+          <div class="nav-item dropdown d-none d-md-flex me-3">
+            <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+              <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+                <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+              </svg>
+              <span class="badge bg-red"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-card">
+              <div class="card">
+                <div class="card-body">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad amet consectetur exercitationem
+                  fugiat in ipsa ipsum, natus odio quidem quod repudiandae sapiente. Amet debitis et magni maxime
+                  necessitatibus ullam.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nav-item dropdown">
+            <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+              aria-label="Open user menu">
+              <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+              <div class="d-none d-xl-block ps-2">
+                <div>Paweł Kuna</div>
+                <div class="mt-1 small text-muted">UI Designer</div>
+              </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <a href="#" class="dropdown-item">Set status</a>
+              <a href="#" class="dropdown-item">Profile & account</a>
+              <a href="#" class="dropdown-item">Feedback</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item">Settings</a>
+              <a href="#" class="dropdown-item">Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-menu">
+          <ul class="navbar-nav pt-lg-3">
+            <li class="nav-item">
+              <a class="nav-link" href="./users.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <span class="nav-link-icon d-md-none d-lg-inline-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                      stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="nav-link-title">
+                  Mes Utilisateures
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./affichage.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/device-tv -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <rect x="3" y="7" width="18" height="13" rx="2" />
+                    <polyline points="16 3 12 7 8 3" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Mes Affichages
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./maquettes.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/layout-columns -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <line x1="12" y1="4" x2="12" y2="20" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Mes Maquettes
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./videos.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/video -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z" />
+                    <rect x="3" y="6" width="12" height="12" rx="2" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Mes Video
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./images.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/photo -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <line x1="15" y1="8" x2="15.01" y2="8" />
+                    <rect x="4" y="4" width="16" height="16" rx="3" />
+                    <path d="M4 15l4 -4a3 5 0 0 1 3 0l5 5" />
+                    <path d="M14 14l1 -1a3 5 0 0 1 3 0l2 2" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Mes Images
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./playlists.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/playlist -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx="14" cy="17" r="3" />
+                    <path d="M17 17v-13h4" />
+                    <path d="M13 5h-10" />
+                    <line x1="3" y1="9" x2="13" y2="9" />
+                    <path d="M9 13h-6" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Mes Playlists
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./animations.html">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/run -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx="13" cy="4" r="1" />
+                    <path d="M4 17l5 1l.75 -1.5" />
+                    <path d="M15 21l0 -4l-4 -3l1 -6" />
+                    <path d="M7 12l0 -3l5 -1l3 3l3 1" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Animation
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="logout()">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/logout -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                    <path d="M7 12h14l-3 -3m0 6l3 -3" />
+                  </svg>
+                </span>
+                <span class="nav-link-title">
+                  Logout
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <div class="page-wrapper">
+      <div class="container-xl">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+          <div class="row align-items-center">
+            <div class="col">
+
+              <h2 class="page-title">
+                Modifier une Maquette
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-body">
+
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-cards">
+              <div class="col-12">
+                <form action="" method="post" class="card" id="createMaqForm">
+                  <div class="card-header">
+                    <h4 class="card-title">Modifier une Maquette</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="row">
+                          <div class="col-md-12 col-xl-12">
+                            <div class="mb-3">
+                              <label class="form-label">Label</label>
+                              <input type="text" class="form-control" placeholder="Label" name="label" id="label">
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="row">
+                          <div class="col-md-12 col-xl-12">
+                            <div class="mb-3">
+                              <label class="form-label">Nombre de colonne</label>
+                              <select class="form-select" id="nbrColSelect" name="nbrColonne">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                              </select>
+                              <input type="hidden" name="grid_template_columns" id="gridt">
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-12">
+                        <div class="row">
+                          <label class="form-label">colonnes Gaucha a Droite</label>
+                          <div class="col-5" id="column1">
+
+                            <div class="row">
+                              <label class="form-label">colonne 1</label>
+                            </div>
+                            <div class="row">
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg1">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat1">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect1">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-1">
+
+                          </div>
+
+                          <div class="col-5" id="column2">
+                            <div class="row">
+                              <label class="form-label">colonne 2</label>
+                            </div>
+                            <div class="row">
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg2">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat2">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect2">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column3">
+                              <div class="row">
+                                <label class="form-label">colonne 3</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg3">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat3">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect3">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-1">
+
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column4">
+                              <div class="row">
+                                <label class="form-label">colonne 4</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg4">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat4">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect4"></select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column5">
+                              <div class="row">
+                                <label class="form-label">colonne 5</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg5">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat5">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect5">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-1">
+
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column6">
+                              <div class="row">
+                                <label class="form-label">colonne 6</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg6">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat6">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect6">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column7">
+                              <div class="row">
+                                <label class="form-label">colonne 7</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg7">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat7">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect7">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-1">
+
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column8">
+                              <div class="row">
+                                <label class="form-label">colonne 8</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg8">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat8">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect8">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column9">
+                              <div class="row">
+                                <label class="form-label">colonne 9</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg9">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat9">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect9">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-1">
+
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column10">
+                              <div class="row">
+                                <label class="form-label">colonne 10</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg10">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat10">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect10">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column11">
+                              <div class="row">
+                                <label class="form-label">colonne 11</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg11">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat11">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect11">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-1">
+
+                          </div>
+                          <div class="col-5">
+                            <div class="row" id="column12">
+                              <div class="row">
+                                <label class="form-label">colonne 12</label>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Taille %</label>
+                                    <input type="number" class="form-control size-perc" min="5" max="100"
+                                      placeholder="default" id="sizeg12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select" name="type" id="mediat12">
+                                      <option value="Video">Video</option>
+                                      <option value="Image">Image</option>
+                                      <option value="Animation">Animation</option>
+                                      <option value="Webcam">Webcam</option>
+                                      <option value="Vide">Vide</option>
+                                      <option value="Playlist">Playlist</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4">
+                                <div class="row">
+                                  <div class="mb-3">
+                                    <label class="form-label">Media</label>
+                                    <select class="form-select mediaS" name="media" id="mediaSelect12">
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer text-end">
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary ms-auto">Modifier</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">New report</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
+            </div>
+            <label class="form-label">Report type</label>
+            <div class="form-selectgroup-boxes row mb-3">
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Simple</span>
+                      <span class="d-block text-muted">Provide only basic data needed for the report</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Advanced</span>
+                      <span class="d-block text-muted">Insert charts and additional advanced analyses to be inserted in
+                        the report</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="mb-3">
+                  <label class="form-label">Report url</label>
+                  <div class="input-group input-group-flat">
+                    <span class="input-group-text">
+                      https://tabler.io/reports/
+                    </span>
+                    <input type="text" class="form-control ps-0" value="report-01" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="mb-3">
+                  <label class="form-label">Visibility</label>
+                  <select class="form-select">
+                    <option value="1" selected>Private</option>
+                    <option value="2">Public</option>
+                    <option value="3">Hidden</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Client name</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Reporting period</label>
+                  <input type="date" class="form-control">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div>
+                  <label class="form-label">Additional information</label>
+                  <textarea class="form-control" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+              Cancel
+            </a>
+            <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+              <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Create new report
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Libs JS -->
+    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <!-- Tabler Core -->
+    <script src="./dist/js/tabler.min.js"></script>
+    <script src="./dist/js/jquery-3.6.0.js"></script>
+    <script src="./dist/js/logout.js"></script>
+    <script src="./dist/js/editMaq.js"></script>
+</body>
+
+</html>

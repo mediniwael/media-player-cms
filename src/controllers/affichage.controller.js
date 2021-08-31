@@ -4,17 +4,14 @@ const Affichage = require('../models/affichage.model');
 
 exports.findAll = function (req, res) {
     Affichage.findAll(function (err, affichage) {
-        console.log('controller')
         if (err)
             return res.send(err);
-        console.log('res', affichage);
         res.send(affichage);
     });
 };
 
 
 exports.create = function (req, res) {
-    console.log(req.body)
     const new_affichage = new Affichage(req.body);
 
     //handles null error 
@@ -30,6 +27,16 @@ exports.create = function (req, res) {
 };
 
 
+exports.findDetailByLien = function (req, res) {
+    if(req.clientAuth === 0)
+        return res.json([]);
+    Affichage.findDetailByLien(req.params.lien, function (err, affichage) {
+        if (err)
+            return res.send(err);
+        res.json(affichage);
+    });
+};
+
 exports.findById = function (req, res) {
     if(req.clientAuth === 0)
         return res.json([]);
@@ -43,7 +50,7 @@ exports.findById = function (req, res) {
 exports.findByClientId = function (req, res) {
     if (req.isAuthenticated()) {
         if (req.user[0].Client_idClient)
-            Affichage.findById(req.user[0].Client_idClient, function (err, affichage) {
+            Affichage.findByClientId(req.user[0].Client_idClient, function (err, affichage) {
                 if (err)
                     return res.send(err);
                 res.json(affichage);

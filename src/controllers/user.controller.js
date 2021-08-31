@@ -4,17 +4,14 @@ const User = require('../models/user.model');
 
 exports.findAll = function (req, res) {
     User.findAll(function (err, user) {
-        console.log('controller')
         if (err)
             return res.send(err);
-        console.log('res', user);
         res.send(user);
     });
 };
 
 
 exports.create = function (req, res) {
-    console.log(req.body)
     const new_user = new User(req.body);
 
     //handles null error 

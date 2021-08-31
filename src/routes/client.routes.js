@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const clientController = require('../controllers/client.controller');
-const { isSiteAdmin, isClientAdmin, isAdmin, isAuth, isClient } = require('./authMiddleware');
+const { isSiteAdmin, isClientAdmin, isAdmin, isAuth, isClient } = require('../middleware/authMiddleware');
 
 // Retrieve all client
 router.get('/', isSiteAdmin, clientController.findAll);

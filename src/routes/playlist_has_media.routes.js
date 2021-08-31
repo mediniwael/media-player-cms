@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const playlist_has_mediaController = require('../controllers/playlist_has_media.controller');
-const { isSiteAdmin, isClientAdmin, isAdmin, isAuth } = require('./authMiddleware');
+const { isSiteAdmin, isClientAdmin, isAdmin, isAuth } = require('../middleware/authMiddleware');
 
 // Retrieve all playlist_has_media
 router.get('/', isSiteAdmin, playlist_has_mediaController.findAll);

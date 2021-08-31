@@ -2,9 +2,11 @@
 
 const User = require('../models/user.model');
 const genPassword = require('../../lib/passwordUtils.js').genPassword;
+const clientController = require('../controllers/client.controller');
 
 
 exports.register = function (req, res, next) {
+
     const saltHash = genPassword(req.body.password);
 
     const salt = saltHash.salt;
@@ -15,16 +17,23 @@ exports.register = function (req, res, next) {
         email: req.body.email,
         password: hash,
         salt: salt,
-        admin: req.body.admin,
+        admin: 9,
     });
-    if (req.body.clientId)
-        newUser.Client_idClient = req.body.clientId
-    User.create(newUser, function (err, user) {
-        if (err)
-            res.json({ success: false })
-    })
+    if (req.body.clientName) {
+        newUser.admin = 1
+    }
 
-    res.status(201).json({ success: true })
+    if (req.body.clientName) {
+        req.newuser = newUser
+        clientController.createFromName(req, res)
+    } else {
+        User.create(newUser, function (err, user) {
+            if (err)
+                res.json({ success: false })
+            res.json({ success: true })
+        })
+    }
+
 }
 
 exports.registrationForm = function (req, res, next) {
@@ -48,4 +57,5 @@ exports.loginForm = function (req, res, next) {
 
 exports.logout = function (req, res, next) {
     req.logout();
+    res.send(" ")
 }
