@@ -32,25 +32,31 @@ function parse_playlists(data) {
   const json = JSON.parse(data);
   var html = "<thead><tr><td>id</td><td>Label</td><td></td></tr></thead>";
   for (var i = 0; i < json.length; ++i) {
-
-    html += '<tr>';
-    $.each(json[i], function (key, value) {
-      if (!value)
-        html += '<td></td>';
-      else if (key == "label" || key == "idPlaylist")
-        html += '<td>' + value + '</td>';
-    });
-    html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></div></span></td>"
-    html += '</tr>';
+    if (json[i].userCreated == "Yes") {
+      html += '<tr>';
+      $.each(json[i], function (key, value) {
+        if (!value)
+          html += '<td></td>';
+        else if (key == "label" || key == "idPlaylist")
+          html += '<td>' + value + '</td>';
+      });
+      html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></div></span></td>"
+      html += '</tr>';
+    }
   }
-  html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'
+  const addd = '<tr><td></td><td></td><td></td></tr>'
+  html += addd + addd + addd + addd
   $('#playlist_table').append(html);
 }
 
 $(function () {
   $("#playlist_table").hide();
   //$("#usernameH2").text(localStorage.username)
+  var url = url_origin + "/api/v1/playlists/client/pl/"
 
-  doAjaxGet(url_origin + "/api/v1/playlists/client/pl/").then((data) => parse_playlists(data))
+  if (auth == 2)
+    url = url_origin + "/api/v1/playlists/"
+
+  doAjaxGet(url).then((data) => parse_playlists(data))
 })
 

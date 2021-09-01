@@ -118,7 +118,13 @@ Playlist.findByIdDetails = function (id, result) {
 //SELECT * , media.label AS media_label FROM playlist INNER JOIN playlist_has_media ON playlist.idPlaylist = playlist_has_media.Playlist_idPlaylist LEFT JOIN media ON playlist_has_media.Media_idMedia = media.idMedia WHERE playlist.userCreated= 'Yes' AND playlist.Client_idClient = 1 AND  playlist.idPlaylist = 386
 
 Playlist.findDetailsById = function (params, result) {
-    dbConn.query("SELECT * , media.label AS media_label,playlist.label AS playlist_label FROM playlist INNER JOIN playlist_has_media ON playlist.idPlaylist = playlist_has_media.Playlist_idPlaylist LEFT JOIN media ON playlist_has_media.Media_idMedia = media.idMedia WHERE playlist.userCreated= 'Yes' AND playlist.Client_idClient = ? AND  playlist.idPlaylist = ?", [params.client_id, params.id], function (err, res) {
+    var qr = "SELECT * , media.label AS media_label,playlist.label AS playlist_label FROM playlist INNER JOIN playlist_has_media ON playlist.idPlaylist = playlist_has_media.Playlist_idPlaylist LEFT JOIN media ON playlist_has_media.Media_idMedia = media.idMedia WHERE playlist.userCreated= 'Yes' AND playlist.idPlaylist = ?"
+    var parameters = [params.id]
+    if (params.client_id != -1) {
+        qr = "SELECT * , media.label AS media_label,playlist.label AS playlist_label FROM playlist INNER JOIN playlist_has_media ON playlist.idPlaylist = playlist_has_media.Playlist_idPlaylist LEFT JOIN media ON playlist_has_media.Media_idMedia = media.idMedia WHERE playlist.userCreated= 'Yes'  AND  playlist.idPlaylist = ? AND playlist.Client_idClient = ?"
+        var parameters = [params.id, params.client_id]
+    }
+    dbConn.query(qr, parameters, function (err, res) {
         if (err) {
             console.error("error: ", err);
             result(err, null);

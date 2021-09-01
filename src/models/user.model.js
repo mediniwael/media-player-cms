@@ -48,6 +48,18 @@ User.findByClientId = function (id, result) {
     });
 };
 
+User.findByClientIdAndUnaffected = function (id, result) {
+    dbConn.query("Select * from User where Client_idClient = ? OR admin = 9 ", id, function (err, res) {
+        if (err) {
+            console.error("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+        }
+    });
+};
+
 User.findOne = function (username, result) {
     dbConn.query("Select * from User where username = ? ", username, function (err, res) {
         if (err) {
@@ -61,7 +73,7 @@ User.findOne = function (username, result) {
 };
 
 User.findAll = function (result) {
-    dbConn.query("Select * from User", function (err, res) {
+    dbConn.query("Select * from User Left JOIN Client ON User.Client_idClient = Client.idClient", function (err, res) {
         if (err) {
             console.error("error: ", err);
             result(null, err);
@@ -71,8 +83,9 @@ User.findAll = function (result) {
         }
     });
 };
+
 User.update = function (id, User, result) {
-    dbConn.query("UPDATE User SET username=?,email=?,password=?,salt=?,admin=? WHERE idUser = ?", [User.username, User.email, User.password, User.salt, user.admin, id], function (err, res) {
+    dbConn.query("UPDATE User SET username=?,email=?,password=?,salt=?,admin=? WHERE idUser = ?", [User.username, User.email, User.password, User.salt, User.admin, id], function (err, res) {
         if (err) {
             console.error("error: ", err);
             result(null, err);
@@ -81,6 +94,40 @@ User.update = function (id, User, result) {
         }
     });
 };
+
+User.updateAdmin = function (id, User, result) {
+    dbConn.query("UPDATE User SET admin=? WHERE idUser = ?", [User.admin, id], function (err, res) {
+        if (err) {
+            console.error("error: ", err);
+            result(null, err);
+        } else {
+            result(null, res);
+        }
+    });
+};
+
+User.setClientNull = function (id, result) {
+    dbConn.query("UPDATE User SET Client_idClient= NULL WHERE idUser = ?", [id], function (err, res) {
+        if (err) {
+            console.error("error: ", err);
+            result(null, err);
+        } else {
+            result(null, res);
+        }
+    });
+};
+
+User.updateClient = function (id, User, result) {
+    dbConn.query("UPDATE User SET Client_idClient=? WHERE idUser = ?", [User.Client_idClient, id], function (err, res) {
+        if (err) {
+            console.error("error: ", err);
+            result(null, err);
+        } else {
+            result(null, res);
+        }
+    });
+};
+
 User.delete = function (id, result) {
     dbConn.query("DELETE FROM User WHERE idUser = ?", [id], function (err, res) {
         if (err) {

@@ -52,6 +52,7 @@ const colonneRoutes = require('./src/routes/colonne.routes')
 const clientRoutes = require('./src/routes/client.routes')
 const animationRoutes = require('./src/routes/animation.routes')
 const affichageRoutes = require('./src/routes/affichage.routes')
+const demandeRoutes = require('./src/routes/demande.routes')
 
 // using as middleware
 app.use(emitDisplayChanges)
@@ -85,6 +86,7 @@ app.use('/api/v1/colonnes', colonneRoutes)
 app.use('/api/v1/animations', animationRoutes)
 app.use('/api/v1/affichages', affichageRoutes)
 app.use('/api/v1/clients', clientRoutes)
+app.use('/api/v1/demandes', demandeRoutes)
 
 const authenticationRoutes = require('./src/routes/authentication.routes');
 app.use('/api', authenticationRoutes)

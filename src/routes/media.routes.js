@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mediaController = require('../controllers/media.controller');
-const { injectClientId, isAuth, isClient } = require('../middleware/authMiddleware');
+const { injectClientId, isAuth, isClient, isSiteAdmin } = require('../middleware/authMiddleware');
 const { upload, mediaDelete } = require('../middleware/midlleware');
 
 
@@ -13,6 +13,7 @@ router.post('/', isAuth, injectClientId, mediaController.create);
 
 // Retrieve a single media with id
 router.get('/:id', isAuth, isClient, mediaController.findById);
+router.get('/', isSiteAdmin, mediaController.findAll);
 
 // Retrieve a single media with animation id
 router.get('/animation/find/:id', isAuth, isClient, mediaController.findByAnimId);

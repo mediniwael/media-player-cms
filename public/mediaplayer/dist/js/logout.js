@@ -1,4 +1,3 @@
-const url_origin = window.location.origin
 
 async function doAjaxGet(url) {
     return $.ajax({
@@ -15,5 +14,5 @@ function logout() {
     for (var i = 0; i < allCookies.length; i++)
         document.cookie = allCookies[i] + "=;expires=" + new Date(0).toUTCString();
 
-    doAjaxGet(url_origin + "/api/logout").then(() => window.location = url_origin + "/mediaplayer/sign-in.html")
+    doAjaxGet(window.location.origin + "/api/logout").then(() => window.location = window.location.origin + "/mediaplayer/sign-in.html")
 }

@@ -9,13 +9,13 @@ const Colonne = require('../models/colonne.model');
 module.exports.isAuthed = (req, res, next) => {
     if (req.isAuthenticated()) {
         if (req.user[0].admin == 1) {
-            res.json({ auth: 1 });
+            res.json({ auth: 1, userid: req.user[0].idUser });
         } else if (req.user[0].admin == 2) {
-            res.json({ auth: 2 });
+            res.json({ auth: 2, userid: req.user[0].idUser });
         } else if (req.user[0].admin == 9) {
-            res.json({ auth: 9 });
+            res.json({ auth: 9, userid: req.user[0].idUser });
         } else
-            res.json({ auth: 0 });
+            res.json({ auth: 0, userid: req.user[0].idUser });
     } else {
         res.json({ auth: -1 });
     }
@@ -47,8 +47,10 @@ module.exports.isClientAdmin = (req, res, next) => {
 }
 
 module.exports.isClient = (req, res, next) => {
-    if (req.user[0].admin == 2)
+    if (req.user[0].admin == 2) {
         req.clientAuth = 1
+        next()
+    }
     if (req.originalUrl.includes("affichages"))
         Affichage.findById(req.params.id, function (err, affichage) {
             if (err) {
@@ -123,6 +125,8 @@ module.exports.isClient = (req, res, next) => {
             if (req.user[0].Client_idClient) {
                 if (req.user[0].Client_idClient == user.Client_idClient)
                     req.clientAuth = 1
+                if (user.admin == 9)
+                    req.clientAuth = 1
             } else
                 req.clientAuth = 0
             next()
@@ -147,6 +151,8 @@ module.exports.injectClientId = (req, res, next) => {
 module.exports.injectClientIdAsParam = (req, res, next) => {
     if (req.user[0].Client_idClient)
         req.params.client_id = req.user[0].Client_idClient
+    if (req.user[0].admin == 2)
+        req.params.client_id = -1
     next()
 }
 

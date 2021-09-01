@@ -60,6 +60,11 @@ $(function () {
   $("#userTableCont").hide();
   $("#usernameH2").text(localStorage.username)
 
-  const affichage_get_res = doAjaxGet(url_origin + "/api/v1/affichages/client/id").then((data) => parse_affichage(data))
+  var url = url_origin + "/api/v1/affichages/client/id"
+
+  if (auth == 2)
+    url = url_origin + "/api/v1/affichages/"
+
+  doAjaxGet(url).then((data) => parse_affichage(data))
 
 })

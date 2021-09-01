@@ -1,24 +1,6 @@
 const url_origin = window.location.origin
 
-function deleteMaq(id) {
-  $.ajax({
-    url: 'http://localhost:5000/api/v1/maquettes/' + id,
-    type: 'DELETE',
-  }).done(function (maqId) {
-    location.reload()
-  })
-}
 
-function editMaq(id) {
-  localStorage.maqId = id
-  window.open("./editMaq.html");
-}
-
-
-function detailMaq(id) {
-  localStorage.maqId = id
-  window.open("./detailMaq.html");
-}
 
 async function doAjaxGet(url) {
   return $.ajax({
@@ -43,8 +25,29 @@ function parse_maquette(data) {
     html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deleteMaq(" + json[i].idMaquette + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editMaq(" + json[i].idMaquette + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailMaq(" + json[i].idMaquette + ")'>Details</a></div></span></td>"
     html += '</tr>';
   }
-  html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'
+  const addd = '<tr><td></td><td></td><td></td><td></td><td></td></tr>'
+  html += addd + addd + addd + addd
   $('#usersTable').append(html);
+}
+
+function deleteMaq(id) {
+  $.ajax({
+    url: 'http://localhost:5000/api/v1/maquettes/' + id,
+    type: 'DELETE',
+  }).done(function (maqId) {
+    location.reload()
+  })
+}
+
+function editMaq(id) {
+  localStorage.maqId = id
+  window.open("./editMaq.html");
+}
+
+
+function detailMaq(id) {
+  localStorage.maqId = id
+  window.open("./detailMaq.html");
 }
 
 $(function () {
@@ -52,7 +55,12 @@ $(function () {
   $("#userTableCont").hide();
   $("#usernameH2").text(localStorage.username)
 
-  doAjaxGet(url_origin + "/api/v1/maquettes/client/id").then((data) => parse_maquette(data))
+  var url = url_origin + "/api/v1/maquettes/client/id"
+
+  if (auth == 2)
+    url = url_origin + "/api/v1/maquettes/"
+
+  doAjaxGet(url).then((data) => parse_maquette(data))
 
 })
 

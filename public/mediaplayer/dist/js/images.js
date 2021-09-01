@@ -32,7 +32,6 @@ function parse_media(data) {
                 html += '</tr>';
             }
         }
-        html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'
         $('#usersTable').append(html);
     }
 }
@@ -40,5 +39,10 @@ function parse_media(data) {
 $(function () {
     $("#usernameH2").text(localStorage.username)
 
-    doAjaxGet(url_origin + "/api/v1/medias/client/c/").then((data) => parse_media(data))
+    var url = url_origin + "/api/v1/medias/client/c/"
+
+    if (auth == 2)
+        url = url_origin + "/api/v1/medias/"
+
+    doAjaxGet(url).then((data) => parse_media(data))
 })

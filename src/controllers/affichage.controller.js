@@ -28,7 +28,7 @@ exports.create = function (req, res) {
 
 
 exports.findDetailByLien = function (req, res) {
-    if(req.clientAuth === 0)
+    if (req.clientAuth === 0)
         return res.json([]);
     Affichage.findDetailByLien(req.params.lien, function (err, affichage) {
         if (err)
@@ -38,7 +38,7 @@ exports.findDetailByLien = function (req, res) {
 };
 
 exports.findById = function (req, res) {
-    if(req.clientAuth === 0)
+    if (req.clientAuth === 0)
         return res.json([]);
     Affichage.findById(req.params.id, function (err, affichage) {
         if (err)
@@ -66,7 +66,7 @@ exports.update = function (req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
     } else {
-        if(req.clientAuth === 0)
+        if (req.clientAuth === 0)
             return res.json({ error: false, message: 'Unauthorised update' });
         Affichage.update(req.params.id, new Affichage(req.body), function (err, affichage) {
             if (err)
@@ -79,8 +79,8 @@ exports.update = function (req, res) {
 
 
 exports.delete = function (req, res) {
-    if(req.clientAuth === 0)
-            return res.json({ error: false, message: 'Unauthorised delete' });
+    if (req.clientAuth === 0)
+        return res.json({ error: false, message: 'Unauthorised delete' });
     Affichage.delete(req.params.id, function (err, affichage) {
         if (err)
             return res.send(err);
