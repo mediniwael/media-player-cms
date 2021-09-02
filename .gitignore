@@ -1,9 +1,7 @@
 /node_modules
 /public/resources
-/src1
 express.example.js
 package-lock.json
-/MediaPlayerFront
 /resources/images/*
 /resources/videos/*
-/public/mediaplayer/static
+/public/animation
