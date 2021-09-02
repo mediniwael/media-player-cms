@@ -50,8 +50,12 @@ function parse_users(data) {
     let html = "<thead><tr><td>idUser</td><td>username</td><td>email</td><td></td></tr></thead>";
     for (let i = 0; i < admin_arr.length; ++i) {
       html += '<tr><td>' + admin_arr[i].idUser + '</td><td>' + admin_arr[i].username + '</td><td>' + admin_arr[i].email + '</td>';
-      html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"removeuser(" + admin_arr[i].idUser + ")\">Supprimer du Client</a>"
-      html += "<a href='#' class='btn btn - white' onclick=\"revokeadmin(" + admin_arr[i].idUser + ")\">Révoquer admin</a></td></tr>"
+      if (admin_arr[i].idUser == userid) {
+        html += "<td class='text-end'>Utilisateur Courant</td>"
+      } else {
+        html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"removeuser(" + admin_arr[i].idUser + ")\">Supprimer du Client</a>"
+        html += "<a href='#' class='btn btn - white' onclick=\"revokeadmin(" + admin_arr[i].idUser + ")\">Révoquer admin</a></td></tr>"
+      }
     }
     $('#adminTable').append(html);
   }
@@ -77,9 +81,9 @@ function parse_demandes(data) {
     for (let index = 0; index < json.length; index++) {
       const element = json[index];
       html += '<tr><td>' + element.idDemande + '</td><td>' + (new Date(element.create_time)).toLocaleString() + '</td><td>' + element.username + '</td><td>' + element.email + '</td>'
-      html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"adduser9d(" + element.idUser + "," + element.idDemande + ")\">Ajouter au Client</a> "
-      html += "<a href='#' class='btn btn - white' onclick=\"addadmin9d(" + element.idUser + "," + element.idDemande + ")\">Ajouter comme admin</a>"
-      html += "<a href='#' class='btn btn - white' onclick=\"deletedemande(" + element.idDemande + ")\">Supprimer la demande</a></td></tr>"
+      html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"adduser9d(" + element.idUser + ")\">Ajouter au Client</a> "
+      html += "<a href='#' class='btn btn - white' onclick=\"addadmin9d(" + element.idUser + ")\">Ajouter comme admin</a>"
+      html += "<a href='#' class='btn btn - white' onclick=\"deletedemande(" + element.idUser + ")\">Supprimer la demande</a></td></tr>"
     }
     console.log(html)
     $('#demandeTable').append(html);
@@ -119,8 +123,8 @@ function adduser9(id) {
   if (userid != id) {
     const user = { Client_idClient: clientid, admin: 0 }
     doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
-      .then(() => doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user)
-        .then(() => window.location.reload()))
+      .then(() => doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user))
+      .then(() => window.location.reload())
   }
 }
 
@@ -132,14 +136,14 @@ function addadmin9(id) {
         .then(() => window.location.reload()))
   }
 }
-function adduser9d(id, idd) {
+function adduser9d(id) {
   adduser9(id)
-  deletedemande(idd)
+  deletedemande(id)
 }
 
-function addadmin9d(id, idd) {
+function addadmin9d(id) {
   addadmin9(id)
-  deletedemande(idd)
+  deletedemande(id)
 }
 
 $(function () {

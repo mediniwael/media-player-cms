@@ -9,6 +9,7 @@ var nbrp = 0
 const url_origin = window.location.origin
 
 async function doAjaxGet(url) {
+    console.log("doAjaxGet start " + url)
     return $.ajax({
         url: url,
         dataType: "text",
@@ -31,8 +32,9 @@ async function doAjaxPutData(url, data) {
     })
 }
 
-function parse_media(data) {
-    var json = JSON.parse(data);
+function parse_media(data, clid) {
+    console.log("parse_media start")
+    var json = JSON.parse(data).filter((el) => { return el.Client_idClient = clid });;
     for (var i = 0; i < json.length; ++i) {
         if (json[i].type == "Video") {
             videos[nbrv] = json[i]
@@ -46,16 +48,21 @@ function parse_media(data) {
     for (var i = 0; i < videos.length; ++i) {
         $(".mediaS").append(new Option(videos[i].label, videos[i].idMedia));
     }
+    console.log("parse_media done")
 }
 
 function parse_animation(data) {
+    console.log("parse_animation start")
     animations = JSON.parse(data);
     nbra = animations.length
+    console.log("parse_animation done")
 }
 
-function parse_playlist(data) {
-    playlists = JSON.parse(data);
+function parse_playlist(data, clid) {
+    console.log("parse_playlist start")
+    playlists = JSON.parse(data).filter((el) => { return el.Client_idClient = clid });
     nbrp = playlists.length
+    console.log("parse_playlist done")
 }
 
 function parseGridColumn(grid, nb) {
@@ -72,6 +79,7 @@ function parseGridColumn(grid, nb) {
 }
 
 function parse_maquette(data) {
+    console.log("parse_maquette start")
     maquettes = JSON.parse(data);
     nbrmaq = maquettes.length
     if (maquettes[0]) {
@@ -136,6 +144,7 @@ function parse_maquette(data) {
         }
         $("#gridt").val(gridtem)
     }
+    console.log("parse_maquette done")
 }
 
 function maquette_put_callback() {
@@ -276,16 +285,38 @@ function genTypeArray() {
     return typeMedia
 }
 
+async function get_parse(url, parse_fn, clid = 0) {
+    const data = await doAjaxGet(url)
+    if (clid == 0)
+        return parse_fn(data)
+    else
+        return parse_fn(data, clid)
+}
 
 $(function () {
     var maqId = localStorage.maqId
     localStorage.removeItem('maqId');
 
-    on_nbr_col_change()
+    var play_url = url_origin + "/api/v1/playlists/client/pl/"
+    if (auth == 2)
+        play_url = url_origin + "/api/v1/playlists/"
+    var media_url = url_origin + "/api/v1/medias/client/c/"
+    if (auth == 2)
+        media_url = url_origin + "/api/v1/medias/"
 
-    doAjaxGet(url_origin + "/api/v1/medias/client/c/").then((data) => parse_media(data))
-    doAjaxGet(url_origin + "/api/v1/animations/media/id/").then((data) => parse_animation(data))
-    doAjaxGet(url_origin + "/api/v1/playlists/client/pl/").then((data) => parse_playlist(data))
+    on_nbr_col_change();
+
+    const animationdata = get_parse(url_origin + "/api/v1/animations/media/id/", parse_animation);
+
+    (async () => {
+        const maquettedata = doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId)
+        const client_id_data = await doAjaxGet(url_origin + "/api/v1/maquettes/" + maqId)
+        const clid = (JSON.parse(client_id_data))[0].Client_idClient
+
+        const promisedata = await Promise.all([maquettedata, get_parse(media_url, parse_media, clid), get_parse(play_url, parse_playlist, clid), animationdata])
+
+        parse_maquette(promisedata[0])
+    })();
 
     $("#mediat1").on("change", () => { typeChange(1) })
     $("#mediat2").on("change", () => { typeChange(2) })
@@ -303,7 +334,7 @@ $(function () {
     $("#nbrColSelect").on("change", () => on_nbr_col_change())
     $(".size-perc").on("change", () => grid_gen())
 
-    doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId).then((data) => parse_maquette(data))
+
 
     $("#createMaqForm").submit(function (event) {
         event.preventDefault();

@@ -148,10 +148,12 @@ function parse_playlist(data) {
 }
 
 async function doAjaxPostData(url, data) {
+    console.log(url)
     return $.post(url, data)
 }
 
 async function doAjaxPost(url) {
+    console.log(url)
     return $.post(url)
 }
 
@@ -165,7 +167,8 @@ function getFormData() {
 function maquette_post_callback(maqId) {
     const Maquette_idMaquette = maqId.data
     const typeMedia = genTypeArray()
-
+    console.log("typeMedia.length")
+    console.log(typeMedia.length)
     for (var i = 0; i < typeMedia.length; i++) {
         if (typeMedia[i].id == 'x' || typeMedia[i].type == "Playlist") {
             var col = { ColonneNbr: typeMedia[i].colNbr, Maquette_idMaquette: Maquette_idMaquette, Type: typeMedia[i].type }

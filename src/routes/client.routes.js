@@ -4,7 +4,7 @@ const clientController = require('../controllers/client.controller');
 const { isSiteAdmin, isClientAdmin, isAdmin, isAuth, isClient } = require('../middleware/authMiddleware');
 
 // Retrieve all client
-router.get('/', isSiteAdmin, clientController.findAll);
+router.get('/', isAuth, clientController.findAll);
 
 // Create a new client
 router.post('/', clientController.create);

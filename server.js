@@ -9,15 +9,18 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const { eventEmitter1, emitDisplayChanges } = require('./src/middleware/midlleware')
 const upload = require('express-fileupload')
-const { isAuth } = require('./src/middleware/authMiddleware')
+const { isAuth, mediaAccess } = require('./src/middleware/authMiddleware')
 
 
 app.use(upload())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static('./public'));
-app.use('/video', express.static('./resources/videos'));
-app.use('/image', express.static('./resources/images'));
+
+//app.use('/video', mediaAccess, express.static('./resources/videos'));
+//app.use('/image', mediaAccess, express.static('./resources/images'));
+
+
 
 
 require('./config/passport.config')
@@ -91,8 +94,15 @@ app.use('/api/v1/demandes', demandeRoutes)
 const authenticationRoutes = require('./src/routes/authentication.routes');
 app.use('/api', authenticationRoutes)
 
+app.get('/video/:cl/:video', mediaAccess, (req, res) => {
+  res.sendFile(__dirname + '/resources/videos/' + req.params.cl + '/' + req.params.video)
+})
 
-app.get('/affichage/:cl/:room', (req, res) => {
+app.get('/image/:cl/:image', mediaAccess, (req, res) => {
+  res.sendFile(__dirname + '/resources/images/' + req.params.cl + '/' + req.params.image)
+})
+
+app.get('/affichage/:cl/:room', mediaAccess, (req, res) => {
   res.sendFile(__dirname + '/resources/mediaplayer/index.html')
 })
 

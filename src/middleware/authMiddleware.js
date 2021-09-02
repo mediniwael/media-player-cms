@@ -46,6 +46,14 @@ module.exports.isClientAdmin = (req, res, next) => {
     }
 }
 
+module.exports.mediaAccess = (req, res, next) => {
+    if (req.user[0].Client_idClient == req.params.cl)
+        next()
+    else {
+        res.redirect('/mediaplayer/error-500.html')//public\mediaplayer\error-500.html
+    }
+}
+
 module.exports.isClient = (req, res, next) => {
     if (req.user[0].admin == 2) {
         req.clientAuth = 1

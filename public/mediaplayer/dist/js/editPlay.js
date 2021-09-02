@@ -3,6 +3,7 @@ var nbrv = 0
 var prevx
 const url_origin = window.location.origin
 
+
 async function doAjaxGet(url) {
     return $.ajax({
         url: url,
@@ -36,7 +37,9 @@ async function doAjaxDelete(url) {
     })
 }
 
-function parse_media(data) {
+function parse_media(data, data2) {
+
+    const clid = (JSON.parse(data2))[0].Client_idClient
     for (var i = 0; i < 100; i++) {
         $("#videoDivs").append('<div class="col-3 col-xl-2" id="videoSelectDiv' + (i + 1) + '"><div class="row" ><div class="mb-3"><label class="form-label">Video ' + (i + 1) + '</label><select class="form-select videoS" name="media" id="videoSelect' + (i + 1) + '"></select></div></div></div>')
     }
@@ -45,7 +48,7 @@ function parse_media(data) {
 
     //fill videos[] from response
     for (var i = 0; i < json.length; ++i) {
-        if (json[i].type == "Video") {
+        if (json[i].type == "Video" && clid == json[i].Client_idClient) {
             videos[nbrv] = json[i]
             nbrv++
         }
@@ -97,46 +100,48 @@ function nbrVideoOnChange() {
     }
 }
 
-function playlist_post_callback(playlist_id) {
-    localStorage.playId = playlist_id.data
-}
-
-function playlist_delete_callback() {
-
-    var promise_array = []
-
+function new_phm_gen() {
+    var phmarray = []
     const nbrV = parseInt($("#nbr_video").val())
     for (let index = 0; index < nbrV; index++) {
-        let phmNew = { Playlist_idPlaylist: localStorage.playId, Media_idMedia: $("#videoSelect" + (index + 1)).val(), rang: (index + 1) }
-        promise_array.push(doAjaxPostData(url_origin + "/api/v1/phm/", phmNew))
+        phmarray.push({ Playlist_idPlaylist: localStorage.playId, Media_idMedia: $("#videoSelect" + (index + 1)).val(), rang: (index + 1) })
     }
-
-    Promise.all(promise_array).then(() => { window.open("./detailPlay.html"); })
-
+    return phmarray
 }
 
 $(function () {
     const playId = localStorage.playId
     localStorage.removeItem('playId');
 
-    doAjaxGet(url_origin + "/api/v1/medias/client/c/")
-        .then((data) => parse_media(data))
-        .then(() => {
-            doAjaxGet(url_origin + "/api/v1/playlists/client/detail/" + playId)
-                .then((data) => parse_playlists(data))
-        })
+    var url = url_origin + "/api/v1/medias/client/c/"
+    if (auth == 2)
+        url = url_origin + "/api/v1/medias/";
 
-    $("#nbr_video").on("change", () => nbrVideoOnChange())
+    (async () => {
 
-    $("#editPlaylistForm").submit(function (event) {
+        const data = doAjaxGet(url_origin + "/api/v1/playlists/client/detail/" + playId)
+        const proms = await Promise.all([
+            doAjaxGet(url),
+            doAjaxGet(url_origin + "/api/v1/playlists/" + playId)
+        ])
+        parse_media(proms[0], proms[1])
+
+        parse_playlists(await data)
+
+    })();
+
+    $("#nbr_video").on("change", () => nbrVideoOnChange());
+
+    $("#editPlaylistForm").submit(async function (event) {
         event.preventDefault();
 
-        doAjaxPostData(url_origin + "/api/v1/playlists/", { label: $("#label").val(), userCreated: "Yes" })
-            .then((data) => playlist_post_callback(data))
-            .then(() => {
-                doAjaxPut(url_origin + "/api/v1/colonnes/" + playId + "/" + localStorage.playId)
-                    .then(() => doAjaxDelete(url_origin + "/api/v1/playlists/" + playId)
-                        .then(() => playlist_delete_callback()))
-            })
+        const data = await doAjaxPostData(url_origin + "/api/v1/playlists/", { label: $("#label").val(), userCreated: "Yes" })
+        const newplayId = data.data
+        localStorage.playId = newplayId
+        doAjaxDelete(url_origin + "/api/v1/playlists/" + playId)
+        await doAjaxPut(url_origin + "/api/v1/colonnes/" + playId + "/" + newplayId)
+        var phmarray = new_phm_gen()
+        await Promise.all(phmarray.map((phm) => { return doAjaxPostData(url_origin + "/api/v1/phm/", phm) }))
+        window.open("./detailPlay.html");
     })
 })

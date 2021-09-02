@@ -22,11 +22,15 @@ function parse_maquette(data) {
       else if (key != "Client_idClient")
         html += '<td>' + value + '</td>';
     });
-    html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deleteMaq(" + json[i].idMaquette + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editMaq(" + json[i].idMaquette + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailMaq(" + json[i].idMaquette + ")'>Details</a></div></span></td>"
-    html += '</tr>';
+    html += "<td class='text-end'><a href='#' class='btn btn - white' onclick='deleteMaq(" + json[i].idMaquette + ")'>Supprimer</a>"
+    html += "<a href='#' class='btn btn - white' onclick='editMaq(" + json[i].idMaquette + ")'>Modifier</a>"
+    html += "<a href='#' class='btn btn - white' onclick='detailMaq(" + json[i].idMaquette + ")'>Details</a></td></tr>"
+
+    //html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deleteMaq(" + json[i].idMaquette + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editMaq(" + json[i].idMaquette + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailMaq(" + json[i].idMaquette + ")'>Details</a></div></span></td>"
+    //html += '</tr>';
   }
-  const addd = '<tr><td></td><td></td><td></td><td></td><td></td></tr>'
-  html += addd + addd + addd + addd
+  //const addd = '<tr><td></td><td></td><td></td><td></td><td></td></tr>'
+  //html += addd + addd + addd + addd
   $('#usersTable').append(html);
 }
 

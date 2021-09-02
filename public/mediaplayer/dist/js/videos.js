@@ -24,12 +24,11 @@ async function doAjaxGet(url) {
 function parse_media(data) {
     const json = JSON.parse(data);
     if (json[0]) {
-        const Client_idClient = json[0].Client_idClient
         var html = "<thead><tr><td>id</td><td>Nom</td><td>Lien</td><td></td></tr></thead>";
         for (var i = 0; i < json.length; ++i) {
             const { idMedia, label, lien, type } = json[i]
             if (type == 'Video') {
-                const link = window.location.origin + '/video/' + Client_idClient + '/' + lien
+                const link = window.location.origin + '/video/' + json[i].Client_idClient + '/' + lien
                 html += '<tr>';
                 html += '<td>' + idMedia + '</td>' + '<td>' + label + '</td>' + '<td><a target="_blank" href="' + link + '" /a> ' + lien + '</td>';
                 //html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick=\"deleteVideo(" + idMedia + ",'" + Client_idClient + "','" + lien + "')\">Supprimer</a><a class='dropdown-item' href='#' onclick='editVideo(" + idMedia + ")'>Modifier</a></div></span></td>"

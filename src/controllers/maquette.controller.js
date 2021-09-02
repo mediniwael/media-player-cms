@@ -147,10 +147,11 @@ exports.delete = function (req, res) {
         if (err)
             return res.send(err);
         colonne.forEach(c => {
+            console.log(c);
             Playlist.findById(c.Playlist_idPlaylist, function (err, playlist) {
                 if (err)
-                    return res.send(err);
-                if (playlist[0].userCreated === "No")
+                    console.error(err)
+                if (!err && playlist[0].userCreated === "No")
                     Playlist.delete(c.Playlist_idPlaylist, function (err, playlist) {
                         if (err)
                             return res.send(err);

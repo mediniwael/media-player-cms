@@ -40,12 +40,18 @@ function parse_playlists(data) {
         else if (key == "label" || key == "idPlaylist")
           html += '<td>' + value + '</td>';
       });
-      html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></div></span></td>"
-      html += '</tr>';
+
+      html += "<td class='text-end'><a href='#' class='btn btn - white' onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a>"
+      html += "<a href='#' class='btn btn - white' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a>"
+      html += "<a href='#' class='btn btn - white' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></td></tr>"
+
+
+      /*html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></div></span></td>"
+      html += '</tr>';*/
     }
   }
-  const addd = '<tr><td></td><td></td><td></td></tr>'
-  html += addd + addd + addd + addd
+  /*const addd = '<tr><td></td><td></td><td></td></tr>'
+  html += addd + addd + addd + addd*/
   $('#playlist_table').append(html);
 }
 

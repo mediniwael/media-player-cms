@@ -56,7 +56,6 @@
         <div id="col2">
         </div>
         <div id="col3">
-
         </div>
         <div id="col4">
         </div>
@@ -182,19 +181,26 @@
         $(function () {
             var playlists = []
 
+
+
+
+
             $.ajax({
                 url: window.location.origin + "/api/v1/affichages/detail/" + roomName,
                 dataType: "text"
             }).done((data) => {
                 setTimeout(runStream, 2500)
                 var current = webcamId;
-                console.log(data);
+                //console.log(data);
                 var json = $.parseJSON(data);
                 var webcamCounter = 1
                 if (json[0]) {
                     var grid = json[0].grid.trim()
                     grid = grid.replaceAll('auto', '1fr')
-                    $(".container-grid").css({ "grid-template-columns": grid, "grid-template-rows": "100%" })
+                    //var bodywidth = $("body").width();
+                    //addpx = bodywidth % json.length
+                    //console.log(grid + " " + addpx + "px")
+                    $(".container-grid").css({ "grid-template-columns": grid /*+ " " + addpx + "px"*/, "grid-template-rows": "100%" })
                 }
                 for (var i = 0; i < json.length; ++i) {
                     if (json[i].colonne_type == "Webcam") {
@@ -243,6 +249,15 @@
                         curr_video.play();
                     })
                 });
+
+                /*$(window).resize(function () {
+                    $(".container-grid").class
+                    var bodywidth = parseInt($("body").width());
+                    addpx = bodywidth % json.length
+                    console.clear()
+                    console.log($("body").width() + " " + bodywidth + " % " + json.length + " = " + addpx)
+                    $(".container-grid").css({ "grid-template-columns": grid + " " + addpx + "px", "grid-template-rows": "100%" });
+                });*/
 
             })
 

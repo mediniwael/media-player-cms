@@ -57,7 +57,7 @@ Demande.findByUserId = function (id, result) {
 };
 
 Demande.delete = function (id, result) {
-    dbConn.query("DELETE FROM Demande WHERE idDemande = ?", [id], function (err, res) {
+    dbConn.query("DELETE FROM Demande WHERE User_idUser = ?", [id], function (err, res) {
         if (err) {
             console.error("error: ", err);
             result(null, err);

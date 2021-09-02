@@ -12,7 +12,7 @@ exports.create = function (req, res) {
         Demande.create(new_demande, function (err, demande) {
             if (err)
                 return res.send(err);
-            res.json({ error: false, message: "Demande added successfully!", data: demande });
+            res.json({ error: false, message: "Demande added successfully!", data: new_demande });
         });
     }
 };

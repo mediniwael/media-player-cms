@@ -44,17 +44,18 @@ function parse_maquette(data) {
         for (var i = 0; i < nbrcol; ++i) {
             var current_maquette = maquettes.filter((maq) => { return parseInt(maq.ColonneNbr) == (i + 1) })
             if (current_maquette[0]) {
-                const { ColonneNbr, Type, playlist_label, media_label, anim_label, Client_idClient, media_link, Playlist_idPlaylist } = current_maquette[0]
+                const { ColonneNbr, Type, playlist_label, media_label, anim_label, Client_idClient, media_link, Playlist_idPlaylist, lien } = current_maquette[0]
                 var gridCol = gridTab[i]
                 if (gridCol != "auto")
                     gridCol += "%"
                 var label
                 if (Type == "Image")
-                    label = media_label
+                    //label = media_label
+                    label = '<a target="_blank" href="' + url_origin + '/image/' + Client_idClient + '/' + media_link + '" /a> ' + media_label
                 else if (Type == "Video")
                     label = '<a target="_blank" href="' + url_origin + '/video/' + Client_idClient + '/' + media_link + '" /a> ' + media_label
                 else if (Type == "Animation")
-                    label = anim_label
+                    label = '<a target="_blank" href="' + url_origin + lien + '" /a> ' + anim_label
                 else if (Type == "Playlist")
                     label = '<a target="_blank" href="#" onclick="detailPlay(' + Playlist_idPlaylist + ')" /a> ' + playlist_label
                 else

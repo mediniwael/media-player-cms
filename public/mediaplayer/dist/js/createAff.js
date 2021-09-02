@@ -30,7 +30,7 @@ function getFormData() {
 
 
 $(function () {
-    const maquette_get_res = doAjaxGet(url_origin + "/api/v1/maquettes/client/id/").then((data) => parse_maquette(data))
+    doAjaxGet(url_origin + "/api/v1/maquettes/client/id/").then((data) => parse_maquette(data))
 
     $("#createAffForm").submit(function (event) {
         event.preventDefault();
