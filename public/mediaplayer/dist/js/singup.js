@@ -8,8 +8,10 @@ $(function () {
     var isNewClient = false
 
     $("#cln").toggle();
+    $("#clnl").toggle();
     $('#chk').click(function () {
         $("#cln").toggle(this.checked);
+        $("#clnl").toggle(this.checked);
         isNewClient = !isNewClient
     });
 

@@ -24,8 +24,10 @@ function parse_users(data) {
   $("#userTableCont").show();
 
   const json = JSON.parse(data);
-
-  let html = "<thead><tr><td>id</td><td>username</td><td>email</td><td>Date de Creation</td><td>Privilege</td><td>Nom du Client</td><td></td></tr></thead>";
+  if (json[0]) {
+    var html = "<thead><tr><td>id</td><td>username</td><td>email</td><td>Date de Creation</td>";
+    html += "<td>Privilege</td><td>Nom du Client</td><td></td></tr></thead>";
+  }
   for (var i = 0; i < json.length; ++i) {
 
     html += '<tr>';

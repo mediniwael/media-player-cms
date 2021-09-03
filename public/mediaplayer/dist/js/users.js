@@ -40,7 +40,10 @@ function parse_users(data) {
       else if (!(key == "salt" || key == "password" || key == "Client_idClient" || key == "idClient"))
         html += '<td>' + value + '</td>';
     });
-    html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"deleteuser(" + json[i].idUser + ")\">Supprimer</a > </td>"
+    if (userid == json[i].idUser)
+      html += "<td class='text-end'>Utilisateur Courant</td>"
+    else
+      html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"deleteuser(" + json[i].idUser + ")\">Supprimer</a > </td>"
 
     html += '</tr>';
   }

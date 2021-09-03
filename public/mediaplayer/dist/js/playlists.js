@@ -30,7 +30,8 @@ async function doAjaxGet(url) {
 function parse_playlists(data) {
   $("#playlist_table").show();
   const json = JSON.parse(data);
-  var html = "<thead><tr><td>id</td><td>Label</td><td></td></tr></thead>";
+  if (json[0])
+    var html = "<thead><tr><td>id</td><td>Label</td><td></td></tr></thead>";
   for (var i = 0; i < json.length; ++i) {
     if (json[i].userCreated == "Yes") {
       html += '<tr>';

@@ -2,11 +2,22 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Refresh" content="0; url='./affichage.html'" />
+
 </head>
 
 <body>
+  <script>
+    const auth = localStorage.auth
+    if (auth == 0)
+      window.location = "/mediaplayer/affichage.html"
+    if (auth == 1)
+      window.location = "/mediaplayer/users1.html"
+    if (auth == 2)
+      window.location = "/mediaplayer/users.html"
+    if (auth == 9)
+      window.location = "/mediaplayer/clients.html"
 
+  </script>
 </body>
 
 </html>
