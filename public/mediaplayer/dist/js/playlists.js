@@ -14,7 +14,6 @@ function editPlay(id) {
   window.open("./editPlaylist.html");
 }
 
-
 function detailPlay(id) {
   localStorage.playId = id
   window.open("./detailPlay.html");
@@ -45,20 +44,13 @@ function parse_playlists(data) {
       html += "<td class='text-end'><a href='#' class='btn btn - white' onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a>"
       html += "<a href='#' class='btn btn - white' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a>"
       html += "<a href='#' class='btn btn - white' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></td></tr>"
-
-
-      /*html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick='deletePlay(" + json[i].idPlaylist + ")'>Supprimer</a><a class='dropdown-item' href='#' onclick='editPlay(" + json[i].idPlaylist + ")'>Modifier</a><a class='dropdown-item' href='#' onclick='detailPlay(" + json[i].idPlaylist + ")'>Details</a></div></span></td>"
-      html += '</tr>';*/
     }
   }
-  /*const addd = '<tr><td></td><td></td><td></td></tr>'
-  html += addd + addd + addd + addd*/
   $('#playlist_table').append(html);
 }
 
 $(function () {
   $("#playlist_table").hide();
-  //$("#usernameH2").text(localStorage.username)
   var url = url_origin + "/api/v1/playlists/client/pl/"
 
   if (auth == 2)

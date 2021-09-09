@@ -4,7 +4,6 @@ const User = require('../models/user.model');
 const genPassword = require('../../lib/passwordUtils.js').genPassword;
 const clientController = require('../controllers/client.controller');
 
-
 exports.register = function (req, res, next) {
 
     const saltHash = genPassword(req.body.password);

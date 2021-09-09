@@ -10,7 +10,6 @@ exports.findAll = function(req, res) {
   });
 };
 
-
 exports.findwithMediaId = function(req, res) {
     Animation.findwithMediaId(function(err, animation) {
       if (err)
@@ -34,7 +33,6 @@ exports.create = function(req, res) {
     }
 };
 
-
 exports.findById = function(req, res) {
     Animation.findById(req.params.id, function(err, animation) {
         if (err)
@@ -42,7 +40,6 @@ exports.findById = function(req, res) {
         res.json(animation);
     });
 };
-
 
 exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
@@ -56,7 +53,6 @@ exports.update = function(req, res) {
     }
   
 };
-
 
 exports.delete = function(req, res) {
   Animation.delete( req.params.id, function(err, animation) {

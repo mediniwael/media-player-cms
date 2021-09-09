@@ -6,7 +6,6 @@ const Media = require('../models/media.model');
 const path = require('path');
 
 
-
 module.exports.isRan = (req, res, next) => {
     console.log("Ran");
     next();
@@ -74,11 +73,5 @@ module.exports.mediaDelete = (req, res, next) => {
         })
     });
 }
-
-
-
-
-
-
 
 module.exports.eventEmitter1 = eventEmitter;

@@ -102,7 +102,6 @@ function enable_button(i) {
   $("#dbutt" + i).hide();
 }
 
-
 $(function () {
   $("#userTableCont").hide();
   $("#usernameH2").text(localStorage.username)

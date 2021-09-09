@@ -1,4 +1,5 @@
 const url_origin = window.location.origin
+var playId = localStorage.playId
 
 function editplay(id) {
     localStorage.playId = id
@@ -35,9 +36,7 @@ async function doAjaxGet(url) {
     });
 }
 
-
 $(function () {
-    var playId = localStorage.playId
     localStorage.removeItem('playId');
     $("#usernameH2").text(localStorage.username)
     $("#modifyButt").attr("onclick", "editplay(" + playId + ")")

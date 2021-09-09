@@ -10,7 +10,6 @@ exports.findAll = function (req, res) {
     });
 };
 
-
 exports.create = function (req, res) {
     const new_user = new User(req.body);
 
@@ -25,7 +24,6 @@ exports.create = function (req, res) {
         });
     }
 };
-
 
 exports.findById = function (req, res) {
     if (req.clientAuth === 0)
@@ -79,6 +77,7 @@ exports.update = function (req, res) {
     }
 
 };
+
 exports.updateAdmin = function (req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
@@ -93,6 +92,7 @@ exports.updateAdmin = function (req, res) {
     }
 
 };
+
 exports.updateClient = function (req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
@@ -107,6 +107,7 @@ exports.updateClient = function (req, res) {
     }
 
 };
+
 exports.setClientNull = function (req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
@@ -121,7 +122,6 @@ exports.setClientNull = function (req, res) {
     }
 
 };
-
 
 exports.delete = function (req, res) {
     if (req.clientAuth === 0)

@@ -1,6 +1,7 @@
 const url_origin = window.location.origin
 var clientid = 0
 const userid = localStorage.userid
+
 async function doAjaxGet(url) {
   return $.ajax({
     url: url,
@@ -72,7 +73,6 @@ function parse_users(data) {
 
 }
 
-
 function parse_demandes(data) {
   const json = JSON.parse(data);
   if (json[0]) {
@@ -91,51 +91,51 @@ function parse_demandes(data) {
 
 }
 
-function removeuser(id) {
+async function removeuser(id) {
   if (userid != id) {
     const user = { admin: 9 }
-    doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
-      .then(() => doAjaxPutData(url_origin + "/api/v1/users/client/setNull/" + id, user)
-        .then(() => window.location.reload()))
+    await Promise.all([doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user), doAjaxPutData(url_origin + "/api/v1/users/client/setNull/" + id, user)])
+    window.location.reload()
   }
 }
 
-function deletedemande(id) {
-  doAjaxDelete(url_origin + "/api/v1/demandes/" + id)
-    .then(() => window.location.reload())
+async function deletedemande(id) {
+  await doAjaxDelete(url_origin + "/api/v1/demandes/" + id)
+  window.location.reload()
 }
 
-function revokeadmin(id) {
+async function revokeadmin(id) {
   if (userid != id) {
     const user = { admin: 0 }
-    doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user).then(() => window.location.reload())
+    await doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
+    window.location.reload()
   }
 }
 
-function grantadmin(id) {
+async function grantadmin(id) {
   if (userid != id) {
     const user = { admin: 1 }
-    doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user).then(() => window.location.reload())
+    await doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
+    window.location.reload()
   }
 }
 
-function adduser9(id) {
+async function adduser9(id) {
   if (userid != id) {
     const user = { Client_idClient: clientid, admin: 0 }
-    doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
-      .then(() => doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user))
-      .then(() => window.location.reload())
+    await Promise.all([doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user), doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user)])
+    window.location.reload()
   }
 }
 
-function addadmin9(id) {
+async function addadmin9(id) {
   if (userid != id) {
     const user = { Client_idClient: clientid, admin: 1 }
-    doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
-      .then(() => doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user)
-        .then(() => window.location.reload()))
+    await Promise.all([doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user), doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user)])
+    window.location.reload()
   }
 }
+
 function adduser9d(id) {
   adduser9(id)
   deletedemande(id)
@@ -146,6 +146,13 @@ function addadmin9d(id) {
   deletedemande(id)
 }
 
+async function render() {
+  const data1 = doAjaxGet(url_origin + "/api/v1/users/cl/un/")
+  const data2 = doAjaxGet(url_origin + "/api/v1/demandes/" + clientid)
+  parse_users(await data1)
+  parse_demandes(await data2)
+}
+
 $(function () {
   $("#adminTableCont").hide();
   $("#userTableCont").hide();
@@ -154,9 +161,6 @@ $(function () {
 
   $("#usernameH2").text(localStorage.username)
 
-  doAjaxGet(url_origin + "/api/v1/users/cl/un/")
-    .then((data) => parse_users(data))
-    .then(() => doAjaxGet(url_origin + "/api/v1/demandes/" + clientid)
-      .then((data) => parse_demandes(data)))
+  render()
 
 })

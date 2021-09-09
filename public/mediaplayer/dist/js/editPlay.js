@@ -2,7 +2,7 @@ const videos = []
 var nbrv = 0
 var prevx
 const url_origin = window.location.origin
-
+const playId = localStorage.playId
 
 async function doAjaxGet(url) {
     return $.ajax({
@@ -109,8 +109,20 @@ function new_phm_gen() {
     return phmarray
 }
 
+async function onFormSubmit(event) {
+    event.preventDefault();
+
+    const data = await doAjaxPostData(url_origin + "/api/v1/playlists/", { label: $("#label").val(), userCreated: "Yes" })
+    const newplayId = data.data
+    localStorage.playId = newplayId
+    doAjaxDelete(url_origin + "/api/v1/playlists/" + playId)
+    await doAjaxPut(url_origin + "/api/v1/colonnes/" + playId + "/" + newplayId)
+    var phmarray = new_phm_gen()
+    await Promise.all(phmarray.map((phm) => { return doAjaxPostData(url_origin + "/api/v1/phm/", phm) }))
+    window.open("./detailPlay.html");
+}
+
 $(function () {
-    const playId = localStorage.playId
     localStorage.removeItem('playId');
 
     var url = url_origin + "/api/v1/medias/client/c/"
@@ -130,18 +142,7 @@ $(function () {
 
     })();
 
-    $("#nbr_video").on("change", () => nbrVideoOnChange());
+    $("#nbr_video").on("change", nbrVideoOnChange);
 
-    $("#editPlaylistForm").submit(async function (event) {
-        event.preventDefault();
-
-        const data = await doAjaxPostData(url_origin + "/api/v1/playlists/", { label: $("#label").val(), userCreated: "Yes" })
-        const newplayId = data.data
-        localStorage.playId = newplayId
-        doAjaxDelete(url_origin + "/api/v1/playlists/" + playId)
-        await doAjaxPut(url_origin + "/api/v1/colonnes/" + playId + "/" + newplayId)
-        var phmarray = new_phm_gen()
-        await Promise.all(phmarray.map((phm) => { return doAjaxPostData(url_origin + "/api/v1/phm/", phm) }))
-        window.open("./detailPlay.html");
-    })
+    $("#editPlaylistForm").submit(onFormSubmit)
 })

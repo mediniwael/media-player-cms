@@ -5,13 +5,12 @@ function editVideo(id) {
     window.open("./editVideo.html");
 }
 
-function deleteVideo(id) {
-    $.ajax({
-        url: 'http://localhost:5000/api/v1/medias/' + id,
+async function deleteVideo(id) {
+    await $.ajax({
+        url: url_origin + '/api/v1/medias/' + id,
         type: 'DELETE',
-    }).done(function () {
-        location.reload()
     })
+    location.reload()
 }
 
 async function doAjaxGet(url) {
@@ -21,7 +20,9 @@ async function doAjaxGet(url) {
     });
 }
 
-function parse_media(data) {
+async function parse_media(url) {
+    const data = await doAjaxGet(url)
+
     const json = JSON.parse(data);
     if (json[0]) {
         var html = "";
@@ -33,7 +34,6 @@ function parse_media(data) {
                 const link = window.location.origin + '/video/' + json[i].Client_idClient + '/' + lien
                 html += '<tr>';
                 html += '<td>' + idMedia + '</td>' + '<td>' + label + '</td>' + '<td><a target="_blank" href="' + link + '" /a> ' + lien + '</td>';
-                //html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick=\"deleteVideo(" + idMedia + ",'" + Client_idClient + "','" + lien + "')\">Supprimer</a><a class='dropdown-item' href='#' onclick='editVideo(" + idMedia + ")'>Modifier</a></div></span></td>"
                 html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"deleteVideo(" + idMedia + ")\">Supprimer</a > </td>"
                 html += '</tr>';
             }
@@ -51,7 +51,7 @@ $(function () {
     if (auth == 2)
         url = url_origin + "/api/v1/medias/"
 
-    doAjaxGet(url).then((data) => parse_media(data))
+    parse_media(url)
 })
 
 

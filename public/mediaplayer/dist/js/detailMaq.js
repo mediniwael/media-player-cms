@@ -1,4 +1,5 @@
 const url_origin = window.location.origin
+const maqId = localStorage.maqId
 
 function parseGridColumn(grid, nb) {
     var splitGrid = grid.replaceAll('%', '').split(' ')
@@ -72,7 +73,6 @@ function parse_maquette(data) {
 }
 
 $(function () {
-    const maqId = localStorage.maqId
     localStorage.removeItem('maqId');
 
     $("#usernameH2").text(localStorage.username)

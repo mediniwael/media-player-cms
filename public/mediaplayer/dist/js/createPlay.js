@@ -24,7 +24,6 @@ async function doAjaxPostData(url, data) {
     return $.post(url, data)
 }
 
-
 function playlist_post_callback(playlist_id) {
     const nbrV = parseInt($("#nbr_video").val())
     const Playlist_idPlaylist = playlist_id.data

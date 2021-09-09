@@ -3,8 +3,6 @@
 const Maquette = require('../models/maquette.model');
 const Colonne = require('../models/colonne.model');
 const Playlist = require('../models/playlist.model');
-const Media = require('../models/media.model');
-const mediaController = require('../controllers/media.controller')
 
 exports.findAll = function (req, res) {
     Maquette.findAll(function (err, maquette) {
@@ -25,13 +23,10 @@ exports.findByClientId = function (req, res) {
     } else {
         return res.send(err);
     }
-
 };
 
 exports.create = function (req, res) {
     const new_maquette = new Maquette(req.body);
-
-    //handles null error 
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
     } else {
@@ -42,66 +37,6 @@ exports.create = function (req, res) {
         });
     }
 };
-
-
-/*
-exports.createFull = function (req, res) {
-
-    const new_maquette = new Maquette(req.body);
-
-    //handles null error 
-    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-        res.status(400).send({ error: true, message: 'Please provide all required field' });
-    } else {
-        Maquette.create(new_maquette, function (err, maquette) {
-            if (err)
-                return res.send(err);
-            const nbrcol = parseInt(req.body.nbrColonne)
-            for(var i = 0;i<nbrcol;i++){
-                var type = req.body.type[i]
-                var mediaid = req.body.media[i]
-                if(mediaid == "x"){
-                    if(type != "Webcam")
-                        type = "Vide"
-                    const newColonne = new Colonne({ ColonneNbr: i+1, Maquette_idMaquette: maquette, Type: type })
-                    Colonne.create(newColonne, function (err, colonne) {
-                        if (err)
-                            return res.send(err);
-                        if(i==nbrcol-1){
-                            res.json({ error: false, message: "Maquette added successfully!", data: maquette });
-                        }
-                    });
-                }else if(type == 'Playlist'){
-                    const newColonne = new Colonne({ ColonneNbr: i+1, Maquette_idMaquette: maquette, Playlist_idPlaylist: mediaid, Type: 'Playlist' })
-                    Colonne.create(newColonne, function (err, colonne) {
-                        if (err)
-                            return res.send(err);
-                            if(i==nbrcol-1){
-                                res.json({ error: false, message: "Maquette added successfully!", data: maquette });
-                            }
-                    });
-                }else if(type == 'Animation'){
-                    req.params.colNbr=i+1
-                    req.params.maqId=maquette
-                    Media.findByAnimId(mediaid, function (err, media) {
-                        if (err)
-                            return res.send(err);
-                        req.params.id= media[0].idMedia
-                        req.params.final= (i==nbrcol-1)
-                        mediaController.addToMaquette(req,res)
-                    })
-                }else{
-                    req.params.colNbr=i+1
-                    req.params.maqId=maquette
-                    req.params.id= mediaid
-                    req.params.final= (i==nbrcol-1)
-                    mediaController.addToMaquette(req,res)
-                }
-            }
-        });
-    }
-};*/
-
 
 exports.findById = function (req, res) {
     if (req.clientAuth === 0)
@@ -123,7 +58,6 @@ exports.findDetailById = function (req, res) {
     });
 };
 
-
 exports.update = function (req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
@@ -136,9 +70,7 @@ exports.update = function (req, res) {
             res.json({ error: false, message: 'Maquette successfully updated' });
         });
     }
-
 };
-
 
 exports.delete = function (req, res) {
     if (req.clientAuth === 0)

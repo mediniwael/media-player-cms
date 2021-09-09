@@ -19,11 +19,6 @@ function parse_isAuth(data) {
 }
 
 $(function () {
-
-    $("#username").on("change", function () {
-        localStorage.username = $("#username").val();
-    })
-
     $("#loginForm").submit(function (e) {
         e.preventDefault();
 

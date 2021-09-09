@@ -4,8 +4,6 @@ const dbConn = require('./db.config');
 const User = require('../src/models/user.model')
 const validPassword = require('../lib/passwordUtils').validPassword;
 
-
-
 const verifyCallback = (username, password, done) => {
     User.findOne(username, function (err, user) {
         try {
@@ -24,7 +22,6 @@ const verifyCallback = (username, password, done) => {
             done(err);
         }
     });
-
 }
 
 /*

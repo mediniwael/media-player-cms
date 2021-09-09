@@ -10,11 +10,8 @@ exports.findAll = function (req, res) {
     });
 };
 
-
 exports.create = function (req, res) {
     const new_playlist = new Playlist(req.body);
-
-    //handles null error 
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
     } else {
@@ -25,9 +22,6 @@ exports.create = function (req, res) {
         });
     }
 };
-
-
-
 
 exports.findById = function (req, res) {
     if (req.clientAuth === 0)
@@ -50,9 +44,7 @@ exports.findByClientId = function (req, res) {
     } else {
         return res.send(err);
     }
-
 };
-
 
 exports.update = function (req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
@@ -66,7 +58,6 @@ exports.update = function (req, res) {
             res.json({ error: false, message: 'Playlist successfully updated' });
         });
     }
-
 };
 
 exports.findByIdDetails = function (req, res) {
@@ -98,4 +89,3 @@ exports.findDetailsById = function (req, res) {
         res.json(playlist);
     });
 };
-//findDetailsById

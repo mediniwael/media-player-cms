@@ -7,6 +7,7 @@ var nbra = 0
 var playlists = []
 var nbrp = 0
 const url_origin = window.location.origin
+var maqId = localStorage.maqId
 
 async function doAjaxGet(url) {
     console.log("doAjaxGet start " + url)
@@ -33,14 +34,14 @@ async function doAjaxPutData(url, data) {
 }
 
 function parse_media(data, clid) {
-    console.log("parse_media start")
-    var json = JSON.parse(data).filter((el) => { return el.Client_idClient = clid });;
+    var json = JSON.parse(data).filter((el) => { return el.Client_idClient == clid });
     for (var i = 0; i < json.length; ++i) {
         if (json[i].type == "Video") {
             videos[nbrv] = json[i]
             nbrv++
         }
         if (json[i].type == "Image") {
+            console.log(json[i]);
             images[nbri] = json[i]
             nbri++
         }
@@ -147,9 +148,18 @@ function parse_maquette(data) {
     console.log("parse_maquette done")
 }
 
-function maquette_put_callback() {
+async function createMaqSubmit(event) {
+    event.preventDefault();
+
+    const maqobj = { label: $("#label").val(), grid_template_columns: $("#gridt").val(), nbrColonne: parseInt($("#nbrColSelect").val()) }
+
+    const maqputprom = doAjaxPutData(url_origin + "/api/v1/maquettes/" + maqId, maqobj)
+
     const nbrColonne = parseInt($("#nbrColSelect").val())
     const typeMedia = genTypeArray()
+
+    await maqputprom
+
     var promise_array = []
     for (var i = 0; i < nbrColonne; i++) {
         if (typeMedia[i].id == 'x' || typeMedia[i].type == "Playlist") {
@@ -163,7 +173,9 @@ function maquette_put_callback() {
             promise_array.push(doAjaxPost(url));
         }
     }
-    Promise.all(promise_array).then(() => window.open("./maquettes.html", "_self"))
+    await Promise.all(promise_array)
+    localStorage.removeItem('maqId');
+    window.open("./maquettes.html", "_self")
 }
 
 function grid_gen() {
@@ -202,6 +214,7 @@ const typeChange = function (y) {
         }
     }
     if (typ == "Image") {
+        console.log(images);
         for (var i = 0; i < images.length; ++i) {
             $("#mediaSelect" + y).append(new Option(images[i].label, images[i].idMedia));
         }
@@ -293,10 +306,7 @@ async function get_parse(url, parse_fn, clid = 0) {
         return parse_fn(data, clid)
 }
 
-$(function () {
-    var maqId = localStorage.maqId
-    localStorage.removeItem('maqId');
-
+async function fillform() {
     var play_url = url_origin + "/api/v1/playlists/client/pl/"
     if (auth == 2)
         play_url = url_origin + "/api/v1/playlists/"
@@ -304,20 +314,18 @@ $(function () {
     if (auth == 2)
         media_url = url_origin + "/api/v1/medias/"
 
-    on_nbr_col_change();
-
     const animationdata = get_parse(url_origin + "/api/v1/animations/media/id/", parse_animation);
 
-    (async () => {
-        const maquettedata = doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId)
-        const client_id_data = await doAjaxGet(url_origin + "/api/v1/maquettes/" + maqId)
-        const clid = (JSON.parse(client_id_data))[0].Client_idClient
+    const maquettedata = doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId)
+    const client_id_data = await doAjaxGet(url_origin + "/api/v1/maquettes/" + maqId)
+    const clid = (JSON.parse(client_id_data))[0].Client_idClient
 
-        const promisedata = await Promise.all([maquettedata, get_parse(media_url, parse_media, clid), get_parse(play_url, parse_playlist, clid), animationdata])
+    const promisedata = await Promise.all([maquettedata, get_parse(media_url, parse_media, clid), get_parse(play_url, parse_playlist, clid), animationdata])
 
-        parse_maquette(promisedata[0])
-    })();
+    parse_maquette(promisedata[0])
+}
 
+function onchanges() {
     $("#mediat1").on("change", () => { typeChange(1) })
     $("#mediat2").on("change", () => { typeChange(2) })
     $("#mediat3").on("change", () => { typeChange(3) })
@@ -333,16 +341,12 @@ $(function () {
 
     $("#nbrColSelect").on("change", () => on_nbr_col_change())
     $(".size-perc").on("change", () => grid_gen())
+}
 
-
-
-    $("#createMaqForm").submit(function (event) {
-        event.preventDefault();
-
-        doAjaxPutData(url_origin + "/api/v1/maquettes/" + maqId,
-            { label: $("#label").val(), grid_template_columns: $("#gridt").val(), nbrColonne: parseInt($("#nbrColSelect").val()) })
-            .then((data) => maquette_put_callback(data))
-
-    })
+$(function () {
+    fillform()
+    on_nbr_col_change();
+    onchanges()
+    $("#createMaqForm").submit(createMaqSubmit)
 })
 

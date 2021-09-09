@@ -1,7 +1,10 @@
 /node_modules
 /public/resources
 express.example.js
+socketio.example.js
 package-lock.json
 /resources/images/*
 /resources/videos/*
 /public/animation
+socketio_example.html
+JQuery.example.js

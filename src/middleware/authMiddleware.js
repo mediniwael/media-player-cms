@@ -4,7 +4,6 @@ const Maquette = require('../models/maquette.model');
 const Media = require('../models/media.model');
 const Playlist = require('../models/playlist.model');
 const User = require('../models/user.model');
-const Colonne = require('../models/colonne.model');
 
 module.exports.isAuthed = (req, res, next) => {
     if (req.isAuthenticated()) {

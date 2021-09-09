@@ -5,8 +5,6 @@ const Playlist = require('../models/playlist.model');
 const Playlist_has_media = require('../models/playlist_has_media.model')
 const Colonne = require('../models/colonne.model')
 
-
-
 exports.findAll = function (req, res) {
     Media.findAll(function (err, media) {
         if (err)
@@ -15,11 +13,8 @@ exports.findAll = function (req, res) {
     });
 };
 
-
 exports.create = function (req, res) {
     const new_media = new Media(req.body);
-
-    //handles null error 
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
     } else {
@@ -30,8 +25,6 @@ exports.create = function (req, res) {
         });
     }
 };
-
-
 
 exports.findById = function (req, res) {
     if (req.clientAuth === 0)
@@ -88,7 +81,6 @@ exports.update = function (req, res) {
 
 };
 
-
 exports.delete = function (req, res) {
     if (req.clientAuth === 0)
         return res.json({ error: false, message: 'Unauthorised delete' });
@@ -132,7 +124,4 @@ exports.addToMaquette = function (req, res) {
             });
         });
     });
-
 }
-
-exports.removeFromMaquette

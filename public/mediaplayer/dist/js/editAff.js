@@ -1,5 +1,6 @@
 const url_origin = window.location.origin
-var clid
+var clid = localStorage.clid
+const affId = localStorage.affId
 
 async function doAjaxGet(url) {
     return $.ajax({
@@ -39,10 +40,7 @@ function parse_affichage(data) {
 }
 
 $(function () {
-    const affId = localStorage.affId
     localStorage.removeItem('affId');
-    console.log(localStorage.clid)
-    clid = localStorage.clid
     localStorage.removeItem('clid');
 
     var url = url_origin + "/api/v1/maquettes/client/id/"

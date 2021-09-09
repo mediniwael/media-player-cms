@@ -9,7 +9,7 @@ async function doAjaxGet(url) {
 
 function deleteImage(id) {
     $.ajax({
-        url: 'http://localhost:5000/api/v1/medias/' + id,
+        url: url_origin + '/api/v1/medias/' + id,
         type: 'DELETE',
     }).done(function () {
         location.reload()
@@ -28,7 +28,6 @@ function parse_media(data) {
                 const link = window.location.origin + '/image/' + json[i].Client_idClient + '/' + lien
                 html += '<tr>';
                 html += '<td>' + idMedia + '</td>' + '<td>' + label + '</td>' + '<td><a target="_blank" href="' + link + '" /a> ' + lien + '</td>';
-                //html += "<td class='text-end'><span class='dropdown'><button class='btn dropdown-toggle align-text-top' data-bs-boundary='viewport' data-bs-toggle='dropdown'>Actions</button><div class='dropdown-menu dropdown-menu-end'><a class='dropdown-item' href='#'  onclick=\"deleteImage(" + idMedia + ",'" + Client_idClient + "','" + lien + "')\">Supprimer</a><a class='dropdown-item' href='#' onclick='editImage(" + idMedia + ")'>Modifier</a></div></span></td>"
                 html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"deleteImage(" + idMedia + ")\">Supprimer</a > </td>"
                 html += '</tr>';
             }

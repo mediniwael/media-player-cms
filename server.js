@@ -9,19 +9,13 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const { eventEmitter1, emitDisplayChanges } = require('./src/middleware/midlleware')
 const upload = require('express-fileupload')
-const { isAuth, mediaAccess } = require('./src/middleware/authMiddleware')
+const { mediaAccess } = require('./src/middleware/authMiddleware')
 
 
 app.use(upload())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static('./public'));
-
-//app.use('/video', mediaAccess, express.static('./resources/videos'));
-//app.use('/image', mediaAccess, express.static('./resources/images'));
-
-
-
 
 require('./config/passport.config')
 
@@ -44,8 +38,6 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-
-// Require user routes
 const userRoutes = require('./src/routes/user.routes')
 const playlist_has_mediaRoutes = require('./src/routes/playlist_has_media.routes')
 const playlistRoutes = require('./src/routes/playlist.routes')
@@ -57,7 +49,6 @@ const animationRoutes = require('./src/routes/animation.routes')
 const affichageRoutes = require('./src/routes/affichage.routes')
 const demandeRoutes = require('./src/routes/demande.routes')
 
-// using as middleware
 app.use(emitDisplayChanges)
 
 io.on('connection', (socket) => {

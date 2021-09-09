@@ -10,7 +10,6 @@ exports.findAll = function (req, res) {
     });
 };
 
-
 exports.create = function (req, res) {
     const new_colonne = new Colonne(req.body);
 
@@ -36,8 +35,6 @@ exports.update = function (req, res) {
 
 
 };
-
-
 
 exports.delete = function (req, res) {
     Colonne.delete([req.params.idMaq, req.params.nbr], function (err, colonne) {
