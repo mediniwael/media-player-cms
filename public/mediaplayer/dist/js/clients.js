@@ -54,37 +54,32 @@ function parse_users(data) {
   $('#usersTable').append(html);
 }
 
-function parse_clients(data) {
+function parse_clients(dataProm) {
+  const data = await dataProm
   $("#userTableCont").show();
   const json = JSON.parse(data);
   let html = "<thead><tr><td>Nom du Client</td><td></td></thead>";
   for (var i = 0; i < json.length; ++i) {
     html += "<tr><td>" + json[i].nom + "</td><td class='text-end' ><a href='#' id='dbutt" + json[i].idClient + "' class='btn btn-white deletedemande' onclick=\"deleteDemande(" + json[i].idClient + ")\">Supprimer la Demande</a><a href='#' id='butt" + json[i].idClient + "' class='btn btn-white' onclick=\"sendDemande(" + json[i].idClient + ")\">Demander affectation</a> </td>"
-
-
   }
   $('#usersTable').append(html);
 }
 
-function sendDemande(id) {
+async function sendDemande(id) {
   if (id != currDemande) {
     const url = url_origin + "/api/v1/demandes/"
-    doAjaxDelete(url + userid)
-      .then(() => {
-        doAjaxPostData(url, { Client_idClient: id, User_idUser: userid })
-          .then(console.log)
-      });
-
+    await doAjaxDelete(url + userid)
+    doAjaxPostData(url, { Client_idClient: id, User_idUser: userid })
     enable_button(currDemande)
     currDemande = id
     disable_button(currDemande)
   }
 }
+
 function deleteDemande(id) {
   if (id == currDemande) {
     const url = url_origin + "/api/v1/demandes/"
     doAjaxDelete(url + userid)
-
     enable_button(currDemande)
     currDemande = 0
   }
@@ -102,21 +97,17 @@ function enable_button(i) {
   $("#dbutt" + i).hide();
 }
 
+async function renderClient() {
+  parse_clients(doAjaxGet(url_origin + "/api/v1/clients/"))
+  const json = JSON.parse(await doAjaxGet(url_origin + "/api/v1/demandes/user/id/" + userid))
+  if (json[0])
+    currDemande = json[0].Client_idClient;
+  disable_button(currDemande)
+}
+
 $(function () {
+  $(".deletedemande").hide();
+  renderClient()
   $("#userTableCont").hide();
-  $("#usernameH2").text(localStorage.username)
-  doAjaxGet(url_origin + "/api/v1/demandes/user/id/" + userid).then((data1) => {
-    const json = JSON.parse(data1)
-    if (json[0])
-      currDemande = json[0].Client_idClient
-  }).then(() => {
-    doAjaxGet(url_origin + "/api/v1/clients/")
-      .then(parse_clients)
-      .then(() => {
-        $(".deletedemande").hide();
-        disable_button(currDemande)
-      })
-  })
-
-
+  $("#usernameH2").text(localStorage.username);
 })

@@ -120,7 +120,8 @@ async function doAjaxGet(url) {
     });
 }
 
-function parse_media(data) {
+async function parse_media(dataProm) {
+    const data = await dataProm
     var json = JSON.parse(data);
     for (var i = 0; i < json.length; ++i) {
         if (json[i].type == "Video") {
@@ -137,12 +138,14 @@ function parse_media(data) {
     }
 }
 
-function parse_animation(data) {
+async function parse_animation(dataProm) {
+    const data = await dataProm
     animations = JSON.parse(data);
     nbra = animations.length
 }
 
-function parse_playlist(data) {
+async function parse_playlist(dataProm) {
+    const data = await dataProm
     playlists = JSON.parse(data);
     nbrp = playlists.length
 }
@@ -164,25 +167,6 @@ function getFormData() {
     return { label: label, grid_template_columns: grid_template_columns, nbrColonne: nbrColonne }
 }
 
-function maquette_post_callback(maqId) {
-    const Maquette_idMaquette = maqId.data
-    const typeMedia = genTypeArray()
-    console.log("typeMedia.length")
-    console.log(typeMedia.length)
-    for (var i = 0; i < typeMedia.length; i++) {
-        if (typeMedia[i].id == 'x' || typeMedia[i].type == "Playlist") {
-            var col = { ColonneNbr: typeMedia[i].colNbr, Maquette_idMaquette: Maquette_idMaquette, Type: typeMedia[i].type }
-            if (typeMedia[i].type == "Playlist") {
-                col.Playlist_idPlaylist = typeMedia[i].id;
-            }
-            doAjaxPostData(url_origin + "/api/v1/colonnes/", col)
-        } else {
-            const url = url_origin + "/api/v1/medias/add/" + typeMedia[i].id + "/" + Maquette_idMaquette + "/" + typeMedia[i].colNbr + "/" + typeMedia[i].type
-            doAjaxPost(url)
-        }
-    }
-}
-
 function genTypeArray() {
     const nbrColonne = parseInt($("#nbrColSelect").val())
     var typeMedia = []
@@ -198,14 +182,33 @@ function genTypeArray() {
     return typeMedia
 }
 
-$(function () {
+async function onformsubmit(event) {
+    event.preventDefault();
+    const url = url_origin + "/api/v1/maquettes/"
+    const new_maquette = getFormData()
+    const maqId = await doAjaxPostData(url, new_maquette)
+    const Maquette_idMaquette = maqId.data
+    const typeMedia = genTypeArray()
+    console.log("typeMedia.length")
+    console.log(typeMedia.length)
+    var promarr = []
+    for (var i = 0; i < typeMedia.length; i++) {
+        if (typeMedia[i].id == 'x' || typeMedia[i].type == "Playlist") {
+            var col = { ColonneNbr: typeMedia[i].colNbr, Maquette_idMaquette: Maquette_idMaquette, Type: typeMedia[i].type }
+            if (typeMedia[i].type == "Playlist") {
+                col.Playlist_idPlaylist = typeMedia[i].id;
+            }
+            promarr.push(doAjaxPostData(url_origin + "/api/v1/colonnes/", col))
+        } else {
+            const url = url_origin + "/api/v1/medias/add/" + typeMedia[i].id + "/" + Maquette_idMaquette + "/" + typeMedia[i].colNbr + "/" + typeMedia[i].type
+            promarr.push(doAjaxPost(url))
+        }
+    }
+    await Promise.all(promarr)
+    window.open("./maquettes.html", "_self")
+}
 
-    const media_get_res = doAjaxGet(url_origin + "/api/v1/medias/client/c/").then((data) => parse_media(data))
-    const animation_get_res = doAjaxGet(url_origin + "/api/v1/animations/media/id/").then((data) => parse_animation(data))
-    const playlist_get_res = doAjaxGet(url_origin + "/api/v1/playlists/client/pl/").then((data) => parse_playlist(data))
-
-    on_nbr_col_change()
-
+function onchanges() {
     $("#mediat1").on("change", () => { typeChange(1) })
     $("#mediat2").on("change", () => { typeChange(2) })
     $("#mediat3").on("change", () => { typeChange(3) })
@@ -221,16 +224,17 @@ $(function () {
 
     $("#nbrColSelect").on("change", () => on_nbr_col_change())
     $(".size-perc").on("change", () => grid_gen())
+}
 
-    $("#createMaqForm").submit(function (event) {
-        event.preventDefault();
+$(function () {
 
-        const url = url_origin + "/api/v1/maquettes/"
-        const new_maquette = getFormData()
+    parse_media(doAjaxGet(url_origin + "/api/v1/medias/client/c/"))
+    parse_animation(doAjaxGet(url_origin + "/api/v1/animations/media/id/"))
+    parse_playlist(doAjaxGet(url_origin + "/api/v1/playlists/client/pl/"))
 
-        const affichage_post_res = doAjaxPostData(url, new_maquette)
-            .then((data) => maquette_post_callback(data))
-            .then(() => window.open("./maquettes.html", "_self"))
+    on_nbr_col_change()
 
-    })
+    onchanges()
+
+    $("#createMaqForm").submit(onformsubmit)
 })

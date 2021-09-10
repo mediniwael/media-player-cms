@@ -31,16 +31,14 @@ async function doAjaxGet(url) {
     });
 }
 
-function parse_maquette(data) {
-    maquettes = JSON.parse(data);
+async function parse_maquette(data) {
+    maquettes = JSON.parse(await data);
     if (maquettes[0]) {
         $("#idMaq").text("id: " + maquettes[0].idMaquette)
         $("#label").text("Label: " + maquettes[0].maquette_label)
         $("#Colmnbr").text(maquettes[0].nbrColonne + " Colonnes")
         const nbrcol = parseInt(maquettes[0].nbrColonne)
-
         var html = "<thead><tr><td>Colonne #</td><td>Grid Taille</td><td>Type</td><td>Media Label</td></thead></tr>";
-
         var gridTab = parseGridColumn(maquettes[0].grid_template_columns, maquettes[0].nbrColonne)
         for (var i = 0; i < nbrcol; ++i) {
             var current_maquette = maquettes.filter((maq) => { return parseInt(maq.ColonneNbr) == (i + 1) })
@@ -51,7 +49,6 @@ function parse_maquette(data) {
                     gridCol += "%"
                 var label
                 if (Type == "Image")
-                    //label = media_label
                     label = '<a target="_blank" href="' + url_origin + '/image/' + Client_idClient + '/' + media_link + '" /a> ' + media_label
                 else if (Type == "Video")
                     label = '<a target="_blank" href="' + url_origin + '/video/' + Client_idClient + '/' + media_link + '" /a> ' + media_label
@@ -65,7 +62,6 @@ function parse_maquette(data) {
                 html += '<td>' + ColonneNbr + '</td>' + '<td>' + gridCol + '</td>' + '<td>' + Type + '</td>' + '<td>' + label + '</td>';
 
                 html += '</tr>';
-                //}
             }
         }
         $('#usersTable').append(html);
@@ -73,12 +69,9 @@ function parse_maquette(data) {
 }
 
 $(function () {
+    parse_maquette(doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId))
     localStorage.removeItem('maqId');
-
     $("#usernameH2").text(localStorage.username)
     $("#modifyButt").attr("onclick", "editMaq(" + maqId + ")")
-
-    const maquette_get_res = doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId).then((data) => parse_maquette(data))
-
 })
 

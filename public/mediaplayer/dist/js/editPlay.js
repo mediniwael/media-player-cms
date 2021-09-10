@@ -37,14 +37,14 @@ async function doAjaxDelete(url) {
     })
 }
 
-function parse_media(data, data2) {
+async function parse_media(data, data2) {
 
-    const clid = (JSON.parse(data2))[0].Client_idClient
+    const clid = (JSON.parse(await data2))[0].Client_idClient
     for (var i = 0; i < 100; i++) {
         $("#videoDivs").append('<div class="col-3 col-xl-2" id="videoSelectDiv' + (i + 1) + '"><div class="row" ><div class="mb-3"><label class="form-label">Video ' + (i + 1) + '</label><select class="form-select videoS" name="media" id="videoSelect' + (i + 1) + '"></select></div></div></div>')
     }
 
-    var json = JSON.parse(data);
+    var json = JSON.parse(await data);
 
     //fill videos[] from response
     for (var i = 0; i < json.length; ++i) {
@@ -60,8 +60,9 @@ function parse_media(data, data2) {
     }
 }
 
-function parse_playlists(data) {
-    var json = JSON.parse(data);
+async function parse_playlists(data, mediaprom) {
+    var json = JSON.parse(await data);
+    await mediaprom
     if (json[0]) {//number of videos in playlist
         prevx = json.length
         $("#nbr_video").val(prevx)
@@ -125,22 +126,15 @@ async function onFormSubmit(event) {
 $(function () {
     localStorage.removeItem('playId');
 
-    var url = url_origin + "/api/v1/medias/client/c/"
-    if (auth == 2)
-        url = url_origin + "/api/v1/medias/";
+    const url = auth == 2 ? url_origin + "/api/v1/medias/" : url_origin + "/api/v1/medias/client/c/";
 
-    (async () => {
-
-        const data = doAjaxGet(url_origin + "/api/v1/playlists/client/detail/" + playId)
-        const proms = await Promise.all([
-            doAjaxGet(url),
-            doAjaxGet(url_origin + "/api/v1/playlists/" + playId)
-        ])
-        parse_media(proms[0], proms[1])
-
-        parse_playlists(await data)
-
-    })();
+    const proms = Promise.all([
+        doAjaxGet(url_origin + "/api/v1/playlists/client/detail/" + playId),
+        doAjaxGet(url),
+        doAjaxGet(url_origin + "/api/v1/playlists/" + playId)
+    ])
+    const mediaprom = parse_media(proms[1], proms[2])
+    parse_playlists(proms[0], mediaprom);
 
     $("#nbr_video").on("change", nbrVideoOnChange);
 

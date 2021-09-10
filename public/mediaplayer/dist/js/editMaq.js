@@ -33,8 +33,8 @@ async function doAjaxPutData(url, data) {
     })
 }
 
-function parse_media(data, clid) {
-    var json = JSON.parse(data).filter((el) => { return el.Client_idClient == clid });
+async function parse_media(data, clid) {
+    var json = JSON.parse(await data).filter((el) => { return el.Client_idClient == clid });
     for (var i = 0; i < json.length; ++i) {
         if (json[i].type == "Video") {
             videos[nbrv] = json[i]
@@ -52,16 +52,16 @@ function parse_media(data, clid) {
     console.log("parse_media done")
 }
 
-function parse_animation(data) {
+async function parse_animation(data) {
     console.log("parse_animation start")
-    animations = JSON.parse(data);
+    animations = JSON.parse(await data);
     nbra = animations.length
     console.log("parse_animation done")
 }
 
-function parse_playlist(data, clid) {
+async function parse_playlist(data, clid) {
     console.log("parse_playlist start")
-    playlists = JSON.parse(data).filter((el) => { return el.Client_idClient = clid });
+    playlists = JSON.parse(await data).filter((el) => { return el.Client_idClient = clid });
     nbrp = playlists.length
     console.log("parse_playlist done")
 }
@@ -298,31 +298,19 @@ function genTypeArray() {
     return typeMedia
 }
 
-async function get_parse(url, parse_fn, clid = 0) {
-    const data = await doAjaxGet(url)
-    if (clid == 0)
-        return parse_fn(data)
-    else
-        return parse_fn(data, clid)
-}
-
 async function fillform() {
-    var play_url = url_origin + "/api/v1/playlists/client/pl/"
-    if (auth == 2)
-        play_url = url_origin + "/api/v1/playlists/"
-    var media_url = url_origin + "/api/v1/medias/client/c/"
-    if (auth == 2)
-        media_url = url_origin + "/api/v1/medias/"
+    const play_url = auth == 2 ? url_origin + "/api/v1/playlists/" : url_origin + "/api/v1/playlists/client/pl/"
+    const media_url = auth == 2 ? url_origin + "/api/v1/medias/" : url_origin + "/api/v1/medias/client/c/"
 
-    const animationdata = get_parse(url_origin + "/api/v1/animations/media/id/", parse_animation);
-
+    const animationdata = parse_animation(doAjaxGet(url_origin + "/api/v1/animations/media/id/"))
     const maquettedata = doAjaxGet(url_origin + "/api/v1/maquettes/find/detail/" + maqId)
+
     const client_id_data = await doAjaxGet(url_origin + "/api/v1/maquettes/" + maqId)
     const clid = (JSON.parse(client_id_data))[0].Client_idClient
 
-    const promisedata = await Promise.all([maquettedata, get_parse(media_url, parse_media, clid), get_parse(play_url, parse_playlist, clid), animationdata])
+    await Promise.all([maquettedata, parse_media(doAjaxGet(media_url), clid), parse_playlist(doAjaxGet(play_url), clid), animationdata])
 
-    parse_maquette(promisedata[0])
+    parse_maquette(await maquettedata)
 }
 
 function onchanges() {

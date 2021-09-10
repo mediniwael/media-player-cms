@@ -10,30 +10,19 @@ async function doAjaxGet(url) {
     });
 }
 
-function parse_media(data) {
-    var json = JSON.parse(data);
+async function parse_media(dataProm) {
+    var json = JSON.parse(await dataProm);
     for (var i = 0; i < json.length; ++i) {
         if (json[i].type == "Video") {
             videos[nbrv] = json[i]
             nbrv++
         }
     }
+    genVideoSelectOptions()
 }
 
 async function doAjaxPostData(url, data) {
     return $.post(url, data)
-}
-
-function playlist_post_callback(playlist_id) {
-    const nbrV = parseInt($("#nbr_video").val())
-    const Playlist_idPlaylist = playlist_id.data
-    var promise_array = []
-    for (let index = 0; index < nbrV; index++) {
-        const url = window.location.origin + "/api/v1/phm/"
-        let phmNew = { Playlist_idPlaylist: Playlist_idPlaylist, Media_idMedia: $("#videoSelect" + (index + 1)).val(), rang: (index + 1) }
-        promise_array.push(doAjaxPostData(url, phmNew))
-    }
-    Promise.all(promise_array).then(() => window.open("./playlists.html", "_self"))
 }
 
 function initView() {
@@ -67,21 +56,25 @@ function on_nbr_video_change() {
     }
 }
 
+async function onformsubmit(event) {
+    event.preventDefault();
+    const dataProm = doAjaxPostData(url, { label: label, userCreated: "Yes" })
+    const url = window.location.origin + "/api/v1/playlists/"
+    const label = $("#label").val()
+    const nbrV = parseInt($("#nbr_video").val())
+    const Playlist_idPlaylist = (await dataProm).data
+    var promise_array = []
+    for (let index = 0; index < nbrV; index++) {
+        const url = window.location.origin + "/api/v1/phm/"
+        let phmNew = { Playlist_idPlaylist: Playlist_idPlaylist, Media_idMedia: $("#videoSelect" + (index + 1)).val(), rang: (index + 1) }
+        promise_array.push(doAjaxPostData(url, phmNew))
+    }
+    Promise.all(promise_array).then(() => window.open("./playlists.html", "_self"))
+}
 
 $(function () {
-
     initView()
-
-    const media_get_res = doAjaxGet(url_origin + "/api/v1/medias/client/c/").then((data) => parse_media(data)).then(() => genVideoSelectOptions())
-
+    parse_media(doAjaxGet(url_origin + "/api/v1/medias/client/c/"))
     $("#nbr_video").on("change", () => on_nbr_video_change())
-
-    $("#createMaqForm").submit(function (event) {
-        event.preventDefault();
-
-        const url = window.location.origin + "/api/v1/playlists/"
-        const label = $("#label").val()
-
-        const playlist_post_res = doAjaxPostData(url, { label: label, userCreated: "Yes" }).then((data) => playlist_post_callback(data))
-    })
+    $("#createMaqForm").submit(onformsubmit)
 })

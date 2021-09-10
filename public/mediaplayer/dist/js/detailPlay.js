@@ -6,9 +6,8 @@ function editplay(id) {
     window.open("./editPlaylist.html");
 }
 
-function parse_playlist(data) {
-    var json = JSON.parse(data);
-
+async function parse_playlist(data) {
+    var json = JSON.parse(await data);
     $("#nbrVideos").text("Taille du Playlist: " + json.length)
     $("#label").text("Nom du Playlist: " + json[0].playlist_label);
     $("#idPlay").text("id: " + json[0].idPlaylist)
@@ -37,9 +36,8 @@ async function doAjaxGet(url) {
 }
 
 $(function () {
+    parse_playlist(doAjaxGet(url_origin + "/api/v1/playlists/client/detail/" + playId))
     localStorage.removeItem('playId');
     $("#usernameH2").text(localStorage.username)
     $("#modifyButt").attr("onclick", "editplay(" + playId + ")")
-
-    const plalist_get_res = doAjaxGet(url_origin + "/api/v1/playlists/client/detail/" + playId).then((data) => parse_playlist(data))
 })
