@@ -26,9 +26,9 @@ async function doAjaxGet(url) {
   });
 }
 
-function parse_playlists(data) {
+async function parse_playlists(data) {
   $("#playlist_table").show();
-  const json = JSON.parse(data);
+  const json = JSON.parse(await data);
   if (json[0])
     var html = "<thead><tr><td>id</td><td>Label</td><td></td></tr></thead>";
   for (var i = 0; i < json.length; ++i) {
@@ -51,11 +51,8 @@ function parse_playlists(data) {
 
 $(function () {
   $("#playlist_table").hide();
-  var url = url_origin + "/api/v1/playlists/client/pl/"
+  var url = auth == 2 ? url_origin + "/api/v1/playlists/" : url_origin + "/api/v1/playlists/client/pl/"
 
-  if (auth == 2)
-    url = url_origin + "/api/v1/playlists/"
-
-  doAjaxGet(url).then((data) => parse_playlists(data))
+  parse_playlists(doAjaxGet(url))
 })
 

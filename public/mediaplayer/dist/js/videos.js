@@ -20,10 +20,8 @@ async function doAjaxGet(url) {
     });
 }
 
-async function parse_media(url) {
-    const data = await doAjaxGet(url)
-
-    const json = JSON.parse(data);
+async function parse_media(data) {
+    const json = JSON.parse(await data);
     if (json[0]) {
         var html = "";
         for (var i = 0; i < json.length; ++i) {
@@ -46,12 +44,9 @@ async function parse_media(url) {
 $(function () {
     $("#usernameH2").text(localStorage.username)
 
-    var url = url_origin + "/api/v1/medias/client/c/"
+    var url = auth == 2 ? url_origin + "/api/v1/medias/" : url_origin + "/api/v1/medias/client/c/"
 
-    if (auth == 2)
-        url = url_origin + "/api/v1/medias/"
-
-    parse_media(url)
+    parse_media(doAjaxGet(url))
 })
 
 

@@ -314,6 +314,7 @@ async function fillform() {
 }
 
 function onchanges() {
+    on_nbr_col_change();
     $("#mediat1").on("change", () => { typeChange(1) })
     $("#mediat2").on("change", () => { typeChange(2) })
     $("#mediat3").on("change", () => { typeChange(3) })
@@ -333,7 +334,6 @@ function onchanges() {
 
 $(function () {
     fillform()
-    on_nbr_col_change();
     onchanges()
     $("#createMaqForm").submit(createMaqSubmit)
 })

@@ -7,9 +7,9 @@ async function doAjaxGet(url) {
   });
 }
 
-function parse_maquette(data) {
+async function parse_maquette(data) {
   $("#userTableCont").show();
-  const json = JSON.parse(data);
+  const json = JSON.parse(await data);
   if (json.length) {
     var html = "<thead><tr><td>id</td><td>Label</td><td>Grid Colonnes</td><td>Nombre de Colonne</td><td> </td></thead></tr>";
     for (var i = 0; i < json.length; ++i) {
@@ -52,12 +52,9 @@ $(function () {
   $("#userTableCont").hide();
   $("#usernameH2").text(localStorage.username)
 
-  var url = url_origin + "/api/v1/maquettes/client/id"
+  const url = auth == 2 ? url_origin + "/api/v1/maquettes/" : url_origin + "/api/v1/maquettes/client/id"
 
-  if (auth == 2)
-    url = url_origin + "/api/v1/maquettes/"
-
-  doAjaxGet(url).then((data) => parse_maquette(data))
+  parse_maquette(doAjaxGet(url))
 
 })
 

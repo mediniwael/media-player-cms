@@ -15,10 +15,10 @@ async function doAjaxDelete(url) {
   })
 }
 
-function parse_users(data) {
+async function parse_users(data) {
   $("#userTableCont").show();
 
-  const json = JSON.parse(data);
+  const json = JSON.parse(await data);
 
   let html = "<thead><tr><td>id</td><td>username</td><td>email</td><td>Date de Creation</td><td>Privilege</td><td>Nom du Client</td><td></td></tr></thead>";
   for (var i = 0; i < json.length; ++i) {
@@ -50,13 +50,14 @@ function parse_users(data) {
   $('#usersTable').append(html);
 }
 
-function deleteuser(id) {
-  doAjaxDelete(url_origin + "/api/v1/users/" + id).then(() => window.location.reload())
+async function deleteuser(id) {
+  await doAjaxDelete(url_origin + "/api/v1/users/" + id)
+  window.location.reload()
 }
 
 $(function () {
   $("#userTableCont").hide();
   $("#usernameH2").text(localStorage.username)
 
-  doAjaxGet(url_origin + "/api/v1/users/").then((data) => parse_users(data))
+  parse_users(doAjaxGet(url_origin + "/api/v1/users/"))
 })

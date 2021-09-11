@@ -4,6 +4,20 @@ async function doAjaxPostData(url, data) {
     return $.post(url, data)
 }
 
+async function onformsubmit(e) {
+    try {
+        e.preventDefault();
+        var user = { password: $("#password").val(), username: $("#username").val(), email: $("#email").val() }
+        if (isNewClient)
+            user.clientName = $("#cln").val()
+
+        await doAjaxPostData(url_origin + "/api/register", user);
+        window.location = url_origin + "/mediaplayer/sign-in.html";
+    } catch (error) {
+        window.location.reload()
+    }
+}
+
 $(function () {
     var isNewClient = false
 
@@ -15,17 +29,6 @@ $(function () {
         isNewClient = !isNewClient
     });
 
-    $("#signupform").submit(function (e) {
-        e.preventDefault();
-
-        const user = { password: $("#password").val(), username: $("#username").val(), email: $("#email").val() }
-        if (isNewClient)
-            user.clientName = $("#cln").val()
-
-        doAjaxPostData(url_origin + "/api/register", user)
-            .then(() => window.location = url_origin + "/mediaplayer/sign-in.html")
-            .catch(() => window.location.reload())
-
-    });
+    $("#signupform").submit(onformsubmit);
 
 })

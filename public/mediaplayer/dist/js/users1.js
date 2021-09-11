@@ -23,8 +23,8 @@ async function doAjaxDelete(url) {
   })
 }
 
-function parse_users(data) {
-  const json = JSON.parse(data);
+async function parse_users(data) {
+  const json = JSON.parse(await data);
   var admin_arr = [], user_arr = [], unaff_arr = []
   for (let i = 0; i < json.length; ++i) {
     if (json[i].admin == '0')
@@ -73,8 +73,8 @@ function parse_users(data) {
 
 }
 
-function parse_demandes(data) {
-  const json = JSON.parse(data);
+async function parse_demandes(data) {
+  const json = JSON.parse(await data);
   if (json[0]) {
     $("#demandeTableCont").show();
     let html = "<thead><tr><td>id</td><td>Date</td><td>username</td><td>email</td><td></td></tr></thead>";
@@ -146,13 +146,6 @@ function addadmin9d(id) {
   deletedemande(id)
 }
 
-async function render() {
-  const data1 = doAjaxGet(url_origin + "/api/v1/users/cl/un/")
-  const data2 = doAjaxGet(url_origin + "/api/v1/demandes/" + clientid)
-  parse_users(await data1)
-  parse_demandes(await data2)
-}
-
 $(function () {
   $("#adminTableCont").hide();
   $("#userTableCont").hide();
@@ -161,6 +154,6 @@ $(function () {
 
   $("#usernameH2").text(localStorage.username)
 
-  render()
+  Promise.all([parse_users(doAjaxGet(url_origin + "/api/v1/users/cl/un/")), parse_demandes(doAjaxGet(url_origin + "/api/v1/demandes/" + clientid))])
 
 })

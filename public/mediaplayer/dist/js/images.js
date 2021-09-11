@@ -16,8 +16,8 @@ function deleteImage(id) {
     })
 }
 
-function parse_media(data) {
-    var json = JSON.parse(data);
+async function parse_media(data) {
+    var json = JSON.parse(await data);
     if (json[0]) {
         var html = "";
         for (var i = 0; i < json.length; ++i) {
@@ -37,12 +37,7 @@ function parse_media(data) {
 }
 
 $(function () {
+    const url = auth == 2 ? url = url_origin + "/api/v1/medias/" : url_origin + "/api/v1/medias/client/c/"
+    parse_media(doAjaxGet(url))
     $("#usernameH2").text(localStorage.username)
-
-    var url = url_origin + "/api/v1/medias/client/c/"
-
-    if (auth == 2)
-        url = url_origin + "/api/v1/medias/"
-
-    doAjaxGet(url).then((data) => parse_media(data))
 })

@@ -53,9 +53,9 @@ async function onformsubmit(e) {
 }
 
 $(function () {
+    render()
     localStorage.removeItem('affId');
     localStorage.removeItem('clid');
-
     $("#createAffForm").submit(onformsubmit);
 })
 
