@@ -11,7 +11,6 @@ const { eventEmitter1, emitDisplayChanges } = require('./src/middleware/midllewa
 const upload = require('express-fileupload')
 const { mediaAccess } = require('./src/middleware/authMiddleware')
 
-
 app.use(upload())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -61,11 +60,10 @@ io.on('connection', (socket) => {
 io.sockets.on('connection', function (socket) {
   socket.on('create', function (room) {
     socket.join(room);
-    console.log("rooms");
-    console.log(socket.rooms);
+    //console.log("rooms");
+    //console.log(socket.rooms);
   });
 });
-
 
 eventEmitter1.on("changes detected", (room) => {
   io.to(room).emit("changes detected")

@@ -27,10 +27,10 @@ async function doAjaxGet(url) {
   });
 }
 
-function parse_affichage(dataProm) {
+async function parse_affichage(dataProm) {
   var lien = window.location.origin + "/affichage/"
   $("#userTableCont").show();
-  const json = $.parseJSON(await dataProm);
+  const json = JSON.parse((await dataProm));
   lien += json[0].Client_idClient + "/"
   var html = "<thead><tr><td>id</td><td>Label</td><td>Longuere</td><td>Largeure</td><td>Lien</td><td>Maquette Id</td><td> </td></thead></tr>";
   for (var i = 0; i < json.length; ++i) {

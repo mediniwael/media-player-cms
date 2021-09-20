@@ -74,13 +74,8 @@
         <div id="col11">
         </div>
         <div id="col12">
-
         </div>
-
     </div>
-
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         var video1 = document.querySelector("#webcam-video1");
@@ -113,9 +108,10 @@
 
         const constraints = {
             audio: false,
-            //video: true
             video: { width: 1920, height: 1080 }
         };
+
+        
 
         function getStream(idn) {
             if (video1) {
@@ -164,15 +160,17 @@
 
         var webcamId = localStorage.webcamId
 
-        var deviceIds;
-        navigator.mediaDevices.getUserMedia(constraints)
-        navigator.mediaDevices.enumerateDevices()
-            .then(function (devices) {
-                deviceIds = devices.filter(d => d.kind === "videoinput").map(d => d.deviceId);
-            })
-            .catch(function (err) {
-                console.error(err.name + ": " + err.message);
-            });
+        if (navigator.mediaDevices) {
+            var deviceIds;
+            navigator.mediaDevices.getUserMedia(constraints)
+            navigator.mediaDevices.enumerateDevices()
+                .then((devices) => {
+                    deviceIds = devices.filter(d => d.kind === "videoinput").map(d => d.deviceId);
+                })
+                .catch(function (err) {
+                    console.error(err.name + ": " + err.message);
+                });
+        }
 
         function runStream() {
             getStream(webcamId)
@@ -181,10 +179,6 @@
         $(function () {
             var playlists = []
 
-
-
-
-
             $.ajax({
                 url: window.location.origin + "/api/v1/affichages/detail/" + roomName,
                 dataType: "text"
@@ -192,7 +186,7 @@
                 setTimeout(runStream, 2500)
                 var current = webcamId;
                 //console.log(data);
-                var json = $.parseJSON(data);
+                var json = JSON.parse(data)
                 var webcamCounter = 1
                 if (json[0]) {
                     var grid = json[0].grid.trim()
@@ -201,34 +195,35 @@
                     //addpx = bodywidth % json.length
                     //console.log(grid + " " + addpx + "px")
                     $(".container-grid").css({ "grid-template-columns": grid /*+ " " + addpx + "px"*/, "grid-template-rows": "100%" })
-                }
-                for (var i = 0; i < json.length; ++i) {
-                    if (json[i].colonne_type == "Webcam") {
-                        $("#col" + json[i].colonne_nbr).html("<video autoplay muted class='grid-item-inside' id='webcam-video" + webcamCounter + "'>Your browser does not support the element.</video>")
-                        $("#col" + json[i].colonne_nbr).addClass("webcam-container")
-                        webcamCounter++
-                        initVideo()
-                        getStream(0)
-                    } else if (json[i].colonne_type == "Video") {
-                        $("#col" + json[i].colonne_nbr).html("<video loop autoplay muted class='grid-item-inside' ><source src='" + window.location.origin + "/video/" + clidpath + "/" + json[i].media_lien + "' type='video/mp4'/>Your browser does not support the element.</video>")
-                    } else if (json[i].colonne_type == "Image") {
-                        $("#col" + json[i].colonne_nbr).html("<img class='grid-item-inside' src='" + window.location.origin + "/image/" + clidpath + "/" + json[i].media_lien + "'/>")
-                    } else if (json[i].colonne_type == "Animation") {
-                        $("#col" + json[i].colonne_nbr).html("<iframe class='animation-item' frameBorder='0' src='" + window.location.origin + json[i].animation_lien + "'> </iframe>")
-                    } else if (json[i].colonne_type == "Playlist") {
-                        const vidLink = window.location.origin + "/video/" + clidpath + "/" + json[i].media_lien
-                        const index = playlists.findIndex((el) => { return el.colonne_nbr == json[i].colonne_nbr })
-                        console.log(index);
-                        if (index == -1) {
-                            const pli = playlists.length
-                            playlists[pli] = { colonne_nbr: json[i].colonne_nbr, playlist_label: json[i].playlist_label, video_id: '#playlist' + json[i].colonne_nbr, source_id: '#source' + json[i].colonne_nbr, curr_play_index: 0, videos: [vidLink] }
 
-                            $("#col" + json[i].colonne_nbr).html("<video autoplay muted class='grid-item-inside' id='playlist" + json[i].colonne_nbr + "'><source id='source" + json[i].colonne_nbr + "' src='" + vidLink + "' type='video/mp4'></video>")
+                    for (var i = 0; i < json.length; ++i) {
+                        if (json[i].colonne_type == "Webcam") {
+                            $("#col" + json[i].colonne_nbr).html("<video autoplay muted class='grid-item-inside' id='webcam-video" + webcamCounter + "'>Your browser does not support the element.</video>")
+                            $("#col" + json[i].colonne_nbr).addClass("webcam-container")
+                            webcamCounter++
+                            initVideo()
+                            getStream(0)
+                        } else if (json[i].colonne_type == "Video") {
+                            $("#col" + json[i].colonne_nbr).html("<video loop autoplay muted class='grid-item-inside' ><source src='" + window.location.origin + "/video/" + clidpath + "/" + json[i].media_lien + "' type='video/mp4'/>Your browser does not support the element.</video>")
+                        } else if (json[i].colonne_type == "Image") {
+                            $("#col" + json[i].colonne_nbr).html("<img class='grid-item-inside' src='" + window.location.origin + "/image/" + clidpath + "/" + json[i].media_lien + "'/>")
+                        } else if (json[i].colonne_type == "Animation") {
+                            $("#col" + json[i].colonne_nbr).html("<iframe class='animation-item' frameBorder='0' src='" + window.location.origin + json[i].animation_lien + "'> </iframe>")
+                        } else if (json[i].colonne_type == "Playlist") {
+                            const vidLink = window.location.origin + "/video/" + clidpath + "/" + json[i].media_lien
+                            const index = playlists.findIndex((el) => { return el.colonne_nbr == json[i].colonne_nbr })
+                            console.log(index);
+                            if (index == -1) {
+                                const pli = playlists.length
+                                playlists[pli] = { colonne_nbr: json[i].colonne_nbr, playlist_label: json[i].playlist_label, video_id: '#playlist' + json[i].colonne_nbr, source_id: '#source' + json[i].colonne_nbr, curr_play_index: 0, videos: [vidLink] }
 
-                        } else {
-                            playlists[index].videos.push(vidLink)
+                                $("#col" + json[i].colonne_nbr).html("<video autoplay muted class='grid-item-inside' id='playlist" + json[i].colonne_nbr + "'><source id='source" + json[i].colonne_nbr + "' src='" + vidLink + "' type='video/mp4'></video>")
+
+                            } else {
+                                playlists[index].videos.push(vidLink)
+                            }
+
                         }
-
                     }
                 }
                 $(".webcam-container").click(function () {
@@ -249,22 +244,8 @@
                         curr_video.play();
                     })
                 });
-
-                /*$(window).resize(function () {
-                    $(".container-grid").class
-                    var bodywidth = parseInt($("body").width());
-                    addpx = bodywidth % json.length
-                    console.clear()
-                    console.log($("body").width() + " " + bodywidth + " % " + json.length + " = " + addpx)
-                    $(".container-grid").css({ "grid-template-columns": grid + " " + addpx + "px", "grid-template-rows": "100%" });
-                });*/
-
             })
-
-
         })
-
-
     </script>
 </body>
 
