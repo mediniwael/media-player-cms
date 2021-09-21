@@ -27,11 +27,11 @@ async function parse_users(data) {
   const json = JSON.parse(await data);
   var admin_arr = [], user_arr = [], unaff_arr = []
   for (let i = 0; i < json.length; ++i) {
-    if (json[i].admin == '0')
-      user_arr.push(json[i])
     if (json[i].admin == '1')
+      user_arr.push(json[i])
+    if (json[i].admin == '2')
       admin_arr.push(json[i])
-    if (json[i].admin == '9')
+    if (json[i].admin == '0')
       unaff_arr.push(json[i])
   }
 
@@ -66,7 +66,7 @@ async function parse_users(data) {
     for (let i = 0; i < unaff_arr.length; ++i) {
       html += '<tr><td>' + unaff_arr[i].idUser + '</td><td>' + unaff_arr[i].username + '</td><td>' + unaff_arr[i].email + '</td>';
       html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"adduser9(" + unaff_arr[i].idUser + ")\">Ajouter au Client</a> "
-      html += "<a href='#' class='btn btn - white' onclick=\"addadmin9(" + unaff_arr[i].idUser + ")\">Ajouter comme admin</a></td></tr>"
+      html += "<a href='#' class='btn btn - white' onclick=\"addadmin0(" + unaff_arr[i].idUser + ")\">Ajouter comme admin</a></td></tr>"
     }
     $('#unaffTable').append(html);
   }
@@ -82,7 +82,7 @@ async function parse_demandes(data) {
       const element = json[index];
       html += '<tr><td>' + element.idDemande + '</td><td>' + (new Date(element.create_time)).toLocaleString() + '</td><td>' + element.username + '</td><td>' + element.email + '</td>'
       html += "<td class='text-end'><a href='#' class='btn btn - white' onclick=\"adduser9d(" + element.idUser + ")\">Ajouter au Client</a> "
-      html += "<a href='#' class='btn btn - white' onclick=\"addadmin9d(" + element.idUser + ")\">Ajouter comme admin</a>"
+      html += "<a href='#' class='btn btn - white' onclick=\"addadmin0d(" + element.idUser + ")\">Ajouter comme admin</a>"
       html += "<a href='#' class='btn btn - white' onclick=\"deletedemande(" + element.idUser + ")\">Supprimer la demande</a></td></tr>"
     }
     console.log(html)
@@ -93,7 +93,7 @@ async function parse_demandes(data) {
 
 async function removeuser(id) {
   if (userid != id) {
-    const user = { admin: 9 }
+    const user = { admin: 0 }
     await Promise.all([doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user), doAjaxPutData(url_origin + "/api/v1/users/client/setNull/" + id, user)])
     window.location.reload()
   }
@@ -106,7 +106,7 @@ async function deletedemande(id) {
 
 async function revokeadmin(id) {
   if (userid != id) {
-    const user = { admin: 0 }
+    const user = { admin: 1 }
     await doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
     window.location.reload()
   }
@@ -114,7 +114,7 @@ async function revokeadmin(id) {
 
 async function grantadmin(id) {
   if (userid != id) {
-    const user = { admin: 1 }
+    const user = { admin: 2 }
     await doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user)
     window.location.reload()
   }
@@ -122,15 +122,15 @@ async function grantadmin(id) {
 
 async function adduser9(id) {
   if (userid != id) {
-    const user = { Client_idClient: clientid, admin: 0 }
+    const user = { Client_idClient: clientid, admin: 1 }
     await Promise.all([doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user), doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user)])
     window.location.reload()
   }
 }
 
-async function addadmin9(id) {
+async function addadmin0(id) {
   if (userid != id) {
-    const user = { Client_idClient: clientid, admin: 1 }
+    const user = { Client_idClient: clientid, admin: 2 }
     await Promise.all([doAjaxPutData(url_origin + "/api/v1/users/admin/" + id, user), doAjaxPutData(url_origin + "/api/v1/users/client/" + id, user)])
     window.location.reload()
   }
@@ -141,8 +141,8 @@ function adduser9d(id) {
   deletedemande(id)
 }
 
-function addadmin9d(id) {
-  addadmin9(id)
+function addadmin0d(id) {
+  addadmin0(id)
   deletedemande(id)
 }
 

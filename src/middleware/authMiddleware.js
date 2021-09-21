@@ -7,14 +7,14 @@ const User = require('../models/user.model');
 
 module.exports.isAuthed = (req, res, next) => {
     if (req.isAuthenticated()) {
-        if (req.user[0].admin == 1) {
-            res.json({ auth: 1, userid: req.user[0].idUser });
-        } else if (req.user[0].admin == 2) {
+        if (req.user[0].admin == 2) {
             res.json({ auth: 2, userid: req.user[0].idUser });
-        } else if (req.user[0].admin == 9) {
-            res.json({ auth: 9, userid: req.user[0].idUser });
-        } else
+        } else if (req.user[0].admin == 3) {
+            res.json({ auth: 3, userid: req.user[0].idUser });
+        } else if (req.user[0].admin == 0) {
             res.json({ auth: 0, userid: req.user[0].idUser });
+        } else
+            res.json({ auth: 1, userid: req.user[0].idUser });
     } else {
         res.json({ auth: -1 });
     }
@@ -30,7 +30,7 @@ module.exports.isAuth = (req, res, next) => {
 }
 
 module.exports.isSiteAdmin = (req, res, next) => {
-    if (req.isAuthenticated() && req.user[0].admin == 2) {
+    if (req.isAuthenticated() && req.user[0].admin == 3) {
         next();
     } else {
         res.status(401).json({ msg: 'You are not authorized to view this resource because you are not an admin.' });
@@ -38,7 +38,7 @@ module.exports.isSiteAdmin = (req, res, next) => {
 }
 
 module.exports.isClientAdmin = (req, res, next) => {
-    if (req.isAuthenticated() && req.user[0].admin == 1) {
+    if (req.isAuthenticated() && req.user[0].admin == 2) {
         next();
     } else {
         res.status(401).json({ msg: 'You are not authorized to view this resource because you are not an admin for this client.' });
@@ -54,7 +54,7 @@ module.exports.mediaAccess = (req, res, next) => {
 }
 
 module.exports.isClient = (req, res, next) => {
-    if (req.user[0].admin == 2) {
+    if (req.user[0].admin == 3) {
         req.clientAuth = 1
         next()
     }
@@ -132,7 +132,7 @@ module.exports.isClient = (req, res, next) => {
             if (req.user[0].Client_idClient) {
                 if (req.user[0].Client_idClient == user.Client_idClient)
                     req.clientAuth = 1
-                if (user.admin == 9)
+                if (user.admin == 0)
                     req.clientAuth = 1
             } else
                 req.clientAuth = 0
@@ -142,7 +142,7 @@ module.exports.isClient = (req, res, next) => {
 }
 
 module.exports.isAdmin = (req, res, next) => {
-    if (req.isAuthenticated() && (req.user[0].admin == 1 || req.user[0].admin == 2)) {
+    if (req.isAuthenticated() && (req.user[0].admin == 2 || req.user[0].admin == 3)) {
         next();
     } else {
         res.status(401).json({ msg: 'You are not authorized to view this resource because you are not an admin.' });
@@ -158,7 +158,7 @@ module.exports.injectClientId = (req, res, next) => {
 module.exports.injectClientIdAsParam = (req, res, next) => {
     if (req.user[0].Client_idClient)
         req.params.client_id = req.user[0].Client_idClient
-    if (req.user[0].admin == 2)
+    if (req.user[0].admin == 3)
         req.params.client_id = -1
     next()
 }

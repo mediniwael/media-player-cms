@@ -47,7 +47,7 @@ class User {
         });
     }
     static findByClientIdAndUnaffected(id, result) {
-        dbConn.query("Select * from User where Client_idClient = ? OR admin = 9 ", id, function (err, res) {
+        dbConn.query("Select * from User where Client_idClient = ? OR admin = 0 ", id, function (err, res) {
             if (err) {
                 console.error("error: ", err);
                 result(err, null);

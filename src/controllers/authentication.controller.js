@@ -16,10 +16,10 @@ exports.register = function (req, res, next) {
         email: req.body.email,
         password: hash,
         salt: salt,
-        admin: 9,
+        admin: 0,
     });
     if (req.body.clientName) {
-        newUser.admin = 1
+        newUser.admin = 2
     }
 
     if (req.body.clientName) {

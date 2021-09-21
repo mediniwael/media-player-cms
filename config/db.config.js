@@ -1,13 +1,12 @@
 const mysql = require('mysql');
-//local mysql db connection
 const dbConn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'mydb'
-  })
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'mydb'
+})
 dbConn.connect(function (err) {
-    if (err) throw err;
-    console.log("Database Connected!");
+  if (err) throw err;
+  console.log("Database Connected!");
 });
 module.exports = dbConn;

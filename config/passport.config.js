@@ -1,6 +1,5 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const dbConn = require('./db.config');
 const User = require('../src/models/user.model')
 const validPassword = require('../lib/passwordUtils').validPassword;
 
@@ -23,14 +22,6 @@ const verifyCallback = (username, password, done) => {
         }
     });
 }
-
-/*
-const customFields = {
-    usernameField: 'uname',
-    passwordField: 'pw'
-};
-const strategy = new LocalStrategy(customFields, verifyCallback);
-*/
 
 const strategy = new LocalStrategy(verifyCallback);
 

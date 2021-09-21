@@ -34,13 +34,13 @@ function parse_users(data) {
     $.each(json[i], function (key, value) {
       if (!value && key != "admin" && key != "Client_idClient" && key != "idClient")
         html += '<td></td>';
-      else if (key == "admin" && value == "1")
-        html += '<td>Administrateur du Client</td>';
-      else if (key == "admin" && value == "0")
-        html += '<td>Utilisateure Normal</td>';
       else if (key == "admin" && value == "2")
+        html += '<td>Administrateur du Client</td>';
+      else if (key == "admin" && value == "1")
+        html += '<td>Utilisateure Normal</td>';
+      else if (key == "admin" && value == "3")
         html += '<td>Administrateur du site</td>';
-      else if (key == "admin" && value == "9")
+      else if (key == "admin" && value == "0")
         html += '<td>Utilisateure non affecter</td>';
       else if (key == "create_time")
         html += '<td>' + (new Date(value)).toLocaleString() + '</td>';
